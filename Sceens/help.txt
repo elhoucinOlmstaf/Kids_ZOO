@@ -1,0 +1,218 @@
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  TextInput,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
+import { Entypo } from "@expo/vector-icons";
+
+import { auth } from "firebase/auth";
+
+import firebase from "../DataBase/FireBase/FireBase";
+const windowHeight = Dimensions.get("window").height;
+const Sign_Up = ({ navigation }) => {
+  const [FullName, setFullName] = useState("");
+  const [Email, setEmail] = useState("");
+  const [Password, setPassword] = useState("");
+  const [userData, setuserData] = useState([]);
+  const [IsLogged, setIsLogged] = useState(false);
+  const [errortext, setErrortext] = useState("");
+  const [ShowEye, setShowEye] = useState(true);
+  // const passwordInputRef = createRef();
+
+  const handleSignUp = () => {
+
+    setErrortext("");
+    if (!FullName) return alert("Please fill Name");
+    if (!Email) return alert("Please fill Email");
+    if (!Password) return alert("Please fill Address");
+    setIsLogged(true);
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(Email, Password)
+      .then((user) => {
+        alert("Registration Successful. Please Login to proceed");
+        console.log(user);
+        if (user) {
+          firebase
+            .auth()
+            .currentUser.updateProfile({
+              displayName: FullName,
+            })
+            .then(() => navigation.replace("Log_In"))
+            .then(() => {
+              firebase.auth().onAuthStateChanged((userData) => {
+                setuserData(userData);
+              });
+            })
+            .catch((error) => {
+              console.log(error);
+              setErrortext(error);
+            });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        if (error.code === "auth/email-already-in-use") {
+          setErrortext("That email address is already in use!");
+          setIsLogged(false);
+        } else {
+          setErrortext(error.message);
+          setIsLogged(false);
+        }
+      });
+  };
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.textCon}>
+        <Text style={styles.text}>Sign Up</Text>
+      </View>
+      <View style={styles.inputs}>
+        <View style={styles.sectionStyle}>
+          <Entypo
+            style={styles.imageStyle}
+            name="user"
+            size={24}
+            color="black"
+          />
+          <TextInput
+            style={styles.textInput}
+            placeholder="Enter Your FullName...."
+            value={FullName}
+            onChangeText={(FullName) => setFullName(FullName)}
+          />
+        </View>
+        <View style={styles.sectionStyle}>
+          <Entypo
+            style={styles.imageStyle}
+            name="mail"
+            size={24}
+            color="black"
+          />
+          <TextInput
+            style={styles.textInput}
+            placeholder="Enter Your Eamil...."
+            value={Email}
+            onChangeText={(Email) => setEmail(Email)}
+            textContentType="emailAddress"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoCorrect={false}
+            autoCompleteType="email"
+          />
+        </View>
+        <View style={styles.sectionStyle}>
+          <Entypo
+            style={styles.imageStyle}
+            name="lock"
+            size={24}
+            color="black"
+          />
+          <TextInput
+            style={styles.textInput}
+            placeholder="Enter Your Password...."
+            value={Password}
+            onChangeText={(Password) => setPassword(Password)}
+            secureTextEntry={ShowEye ? true : false}
+          />
+          <Entypo
+            onPress={() => setShowEye(!ShowEye)}
+            style={styles.eye}
+            name={ShowEye ? "eye-with-line" : "eye"}
+            size={24}
+            color="black"
+          />
+        </View>
+      </View>
+      <View style={{ alignItems: "center" }}>
+        <TouchableOpacity
+          style={styles.loginBtn}
+          onPress={() => handleSignUp()}
+        >
+          {IsLogged === false ? (
+            <Text style={styles.loginText}>SIGNUP</Text>
+          ) : (
+            <ActivityIndicator size="large" color="#00ff00" />
+          )}
+        </TouchableOpacity>
+      </View>
+      <View style={{ alignItems: "right", flexDirection: "row" }}>
+        <Text style={styles.HaveAccoun}>Already Have An Account</Text>
+        <Text style={styles.HaveAccoun}>Log In Here</Text>
+      </View>
+      {errortext != "" ? (
+        <Text style={styles.errorTextStyle}> {errortext} </Text>
+      ) : null}
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fcf5f3",
+  },
+  textCon: {
+    alignItems: "center",
+    marginTop: windowHeight - windowHeight + 40,
+  },
+  text: {
+    color: "black",
+    fontSize: 22,
+    fontWeight: "bold",
+  },
+  inputs: {
+    alignItems: "center",
+    marginTop: windowHeight - windowHeight + 30,
+  },
+  textInput: {
+    flex: 1,
+  },
+  sectionStyle: {
+    height: 55,
+    width: "85%",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    borderWidth: 0.5,
+    borderColor: "#000",
+    borderRadius: 50,
+    margin: 10,
+  },
+  imageStyle: {
+    padding: 15,
+  },
+  loginBtn: {
+    width: "70%",
+    backgroundColor: "orange",
+    borderRadius: 25,
+    height: 43,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 5,
+    marginBottom: 10,
+  },
+  loginText: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  HaveAccoun: {
+    fontSize: 16,
+    marginTop: 25,
+    textAlign: "center",
+  },
+  errorTextStyle: {
+    color: "red",
+    textAlign: "center",
+    fontSize: 14,
+  },
+});
+
+export default Sign_Up;
