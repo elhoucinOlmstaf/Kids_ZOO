@@ -6,8 +6,10 @@ import {
   Dimensions,
   TextInput,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import { auth } from "firebase/auth";
+import { Entypo } from "@expo/vector-icons";
 
 import firebase from "../DataBase/FireBase/FireBase";
 const windowHeight = Dimensions.get("window").height;
@@ -52,7 +54,6 @@ const Sign_Up = ({ navigation }) => {
         }
       })
       .catch((error) => {
-        console.log(error);
         if (error.code === "auth/email-already-in-use") {
           setErrortext("That email address is already in use!");
           setIsLogged(false);
@@ -69,45 +70,94 @@ const Sign_Up = ({ navigation }) => {
         <Text style={styles.text}>Sign Up</Text>
       </View>
       <View style={styles.inputs}>
-        <TextInput
-          style={styles.textInput}
-          placeholder="First Name ..."
-          onChangeText={(FullName) => setFirstNmae(FullName)}
-          value={FullName}
-        />
-
-        <TextInput
-          style={styles.textInput}
-          placeholder="Your Email ..."
-          value={Email}
-          onChangeText={setEmail}
-        />
-        <TextInput
-          style={styles.textInput}
-          placeholder="Your Password ..."
-          value={Password}
-          onChangeText={setPassword}
-        />
+        <View style={styles.inputs}>
+          <View style={styles.sectionStyle}>
+            <Entypo
+              style={styles.imageStyle}
+              name="user"
+              size={24}
+              color="black"
+            />
+            <TextInput
+              style={styles.textInput}
+              placeholder="Enter Your FullName...."
+              value={FullName}
+              onChangeText={(FullName) => setFullName(FullName)}
+            />
+          </View>
+          <View style={styles.sectionStyle}>
+            <Entypo
+              style={styles.imageStyle}
+              name="mail"
+              size={24}
+              color="black"
+            />
+            <TextInput
+              style={styles.textInput}
+              placeholder="Enter Your Eamil...."
+              value={Email}
+              onChangeText={(Email) => setEmail(Email)}
+              textContentType="emailAddress"
+              keyboardType="email-address"
+              autoCapitalize="none"
+              autoCorrect={false}
+              autoCompleteType="email"
+            />
+          </View>
+          <View style={styles.sectionStyle}>
+            <Entypo
+              style={styles.imageStyle}
+              name="lock"
+              size={24}
+              color="black"
+            />
+            <TextInput
+              style={styles.textInput}
+              placeholder="Enter Your Password...."
+              value={Password}
+              onChangeText={(Password) => setPassword(Password)}
+              secureTextEntry={ShowEye ? true : false}
+            />
+            <Entypo
+              onPress={() => setShowEye(!ShowEye)}
+              style={styles.eye}
+              name={ShowEye ? "eye-with-line" : "eye"}
+              size={24}
+              color="black"
+            />
+          </View>
+        </View>
       </View>
       <View style={{ alignItems: "center" }}>
         <TouchableOpacity
           style={styles.loginBtn}
           onPress={() => handleSignUp()}
         >
-          <Text style={styles.loginText}>SIGNUP</Text>
+          {IsLogged === false ? (
+            <Text style={styles.loginText}>SIGNUP</Text>
+          ) : (
+            <ActivityIndicator size="large" color="#00ff00" />
+          )}
         </TouchableOpacity>
       </View>
-      <View style={{ alignItems: "center" }}>
-        <Text style={{ fontWeight: "bold", marginTop: -5, fontSize: 19 }}>
-          Or
-        </Text>
-        <TouchableOpacity style={styles.loginBtn}>
-          <Text style={styles.loginText}>SIGNUP With Google</Text>
+      <View style={{ alignItems: "center", flexDirection: "row", margin: 15 }}>
+        <Text style={styles.HaveAccoun}>Already Have An Account</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("Log_In")}>
+          <Text
+            style={{
+              color: "blue",
+              fontSize: 17.5,
+              marginTop: 13,
+              marginLeft: 6,
+            }}
+          >
+            Log In here
+          </Text>
         </TouchableOpacity>
-        <Text style={styles.HaveAccoun}>
-          Already Have An Account Log In Here
-        </Text>
       </View>
+      {errortext ? (
+        <Text style={styles.errorTextStyle}>{errortext}</Text>
+      ) : null}
     </View>
   );
 };
@@ -119,36 +169,43 @@ const styles = StyleSheet.create({
   },
   textCon: {
     alignItems: "center",
-    marginTop: windowHeight - windowHeight + 40,
+    marginTop: windowHeight - windowHeight + 50,
   },
   text: {
-    color: "black",
+    color: "red",
     fontSize: 22,
     fontWeight: "bold",
   },
   inputs: {
     alignItems: "center",
-    marginTop: windowHeight - windowHeight + 30,
+    marginTop: windowHeight - windowHeight + 20,
   },
   textInput: {
-    width: "90%",
+    flex: 1,
+  },
+  sectionStyle: {
     height: 55,
-    borderColor: "#000",
-    borderWidth: 0.5,
+    width: "85%",
+    flexDirection: "row",
+    justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#fff",
+    borderWidth: 0.5,
+    borderColor: "#000",
     borderRadius: 50,
-    marginBottom: 25,
-    padding: 20,
-    backgroundColor: "white",
+    margin: 16,
+  },
+  imageStyle: {
+    padding: 15,
   },
   loginBtn: {
     width: "70%",
-    backgroundColor: "orange",
-    borderRadius: 25,
+    backgroundColor: "tomato",
+    borderRadius: 20,
     height: 43,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 5,
+    marginTop: 19,
     marginBottom: 10,
   },
   loginText: {
@@ -157,8 +214,17 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   HaveAccoun: {
-    fontSize: 19,
-    marginTop: 33,
+    fontSize: 17.5,
+    marginTop: 13,
+    marginLeft: 10,
+  },
+  eye: {
+    marginRight: 15,
+  },
+  errorTextStyle: {
+    color: "red",
+    textAlign: "center",
+    fontSize: 14,
   },
 });
 

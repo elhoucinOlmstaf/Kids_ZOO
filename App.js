@@ -1,8 +1,6 @@
-import { StatusBar } from "expo-status-bar";
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
 
-// importing Screens
+import React from "react";
+
 import StackApp from "./RootApp/AppRoot";
 
 export default function App() {

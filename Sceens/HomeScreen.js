@@ -4,49 +4,162 @@ import {
   Text,
   View,
   Button,
-  TextInput,
+  Image,
+  FlatList,
   TouchableOpacity,
 } from "react-native";
 
-import { auth } from "firebase/auth";
-import firebase from "../DataBase/FireBase/FireBase";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+// screen
+import HomeProfileImage from "../Components/HomeProfileImage";
 
 const HomeScreen = ({ navigation }) => {
-  const [user, setUser] = useState();
-  useEffect(() => {
-    const subscriber = firebase.auth().onAuthStateChanged((user) => {
-      setUser(user);
-    });
-    return subscriber;
-  }, []);
-  
-  // sign out function
-  const signOut = () => {
-    firebase
-      .auth()
-      .signOut()
-      .then(() => {
-        AsyncStorage.removeItem("userData");
-      })
-      .then(() => {
-        navigation.navigate("Log_In");
-      })
-      .catch((error) => console.log(error));
-  };
-
+  const DataList = [
+    {
+      id: 1,
+      title: "Option 1",
+      image: "https://img.icons8.com/color/70/000000/administrator-male.png",
+    },
+    {
+      id: 1,
+      title: "Option 2",
+      image: "https://img.icons8.com/color/70/000000/administrator-male.png",
+    },
+    {
+      id: 2,
+      title: "Option 3",
+      image: "https://img.icons8.com/color/70/000000/filled-like.png",
+    },
+    {
+      id: 3,
+      title: "Option 4",
+      image: "https://img.icons8.com/color/70/000000/facebook-like.png",
+    },
+    {
+      id: 4,
+      title: "Option 5",
+      image: "https://img.icons8.com/color/70/000000/shutdown.png",
+    },
+    {
+      id: 5,
+      title: "Option 6",
+      image: "https://img.icons8.com/color/70/000000/traffic-jam.png",
+    },
+    {
+      id: 6,
+      title: "Option 7",
+      image: "https://img.icons8.com/dusk/70/000000/visual-game-boy.png",
+    },
+    {
+      id: 8,
+      title: "Option 8",
+      image: "https://img.icons8.com/flat_round/70/000000/cow.png",
+    },
+    {
+      id: 9,
+      title: "Option 9",
+      image: "https://img.icons8.com/color/70/000000/coworking.png",
+    },
+    {
+      id: 9,
+      title: "Option 10",
+      image: "https://img.icons8.com/nolan/70/000000/job.png",
+    },
+  ];
   return (
-    <View>
-      <Text>HomeScreen</Text>
-      {user ? (
-        <Text>Welcome {user.displayName ? user.displayName : user.Eamil}</Text>
-      ) : null}
-
-      <View>
-        <Button title="Sign Out" onPress={() => signOut()} />
+    <View style={styles.container}>
+      <HomeProfileImage />
+      <View style={{ marginTop: 180 }}>
+        <FlatList
+          style={styles.list}
+          contentContainerStyle={styles.listContainer}
+          data={DataList}
+          horizontal={false}
+          numColumns={2}
+          keyExtractor={(item) => {
+            return item.id;
+          }}
+          renderItem={({ item }) => {
+            return (
+              <TouchableOpacity style={styles.card}>
+                <View style={styles.cardFooter}></View>
+                <Image style={styles.cardImage} source={{ uri: item.image }} />
+                <View style={styles.cardHeader}>
+                  <View
+                    style={{ alignItems: "center", justifyContent: "center" }}
+                  >
+                    <Text style={styles.title}>{item.title}</Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            );
+          }}
+        />
       </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginBottom: 10,
+  },
+  list: {
+    paddingHorizontal: 5,
+    backgroundColor: "#d8c9b9",
+  },
+  listContainer: {
+    alignItems: "center",
+  },
+  card: {
+    shadowColor: "#00000021",
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 0.37,
+    shadowRadius: 7.49,
+
+    elevation: 12,
+    marginVertical: 10,
+    backgroundColor: "#f1ebe2",
+    flexBasis: "42%",
+    marginHorizontal: 10,
+    borderRadius: 30,
+  },
+  cardHeader: {
+    paddingVertical: 17,
+    paddingHorizontal: 16,
+    borderTopLeftRadius: 1,
+    borderTopRightRadius: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  cardContent: {
+    paddingVertical: 12.5,
+    paddingHorizontal: 16,
+  },
+  cardFooter: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingTop: 12.5,
+    paddingBottom: 25,
+    paddingHorizontal: 16,
+    borderBottomLeftRadius: 1,
+    borderBottomRightRadius: 1,
+  },
+  cardImage: {
+    height: 70,
+    width: 70,
+    alignSelf: "center",
+  },
+  title: {
+    fontSize: 18,
+    flex: 1,
+    alignSelf: "center",
+    color: "#696969",
+  },
+});
 
 export default HomeScreen;

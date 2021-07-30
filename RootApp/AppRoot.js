@@ -17,7 +17,7 @@ import Sign_Up from "../Sceens/Sign_Up";
 import HomeScreen from "../Sceens/HomeScreen";
 import SplashScreen from "../Sceens/SplashScreen";
 import UserResetPassword from "../Sceens/userRestePassword";
-
+import UserProfileScreen from "../Sceens/userProfileScreen";
 const Stack = createStackNavigator();
 // const Drawer = createDrawerNavigator();
 
@@ -42,9 +42,18 @@ const StackApp = () => {
             },
           }}
         />
-        <Stack.Screen name="HomeScreen" component={HomeScreen} />
-        <Stack.Screen name="SplashScreen" component={SplashScreen} />
+        <Stack.Screen
+          name="HomeScreen"
+          component={HomeScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="SplashScreen"
+          component={SplashScreen}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen name="UserResetPassword" component={UserResetPassword} />
+        <Stack.Screen name="UserProfileScreen" component={UserProfileScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
