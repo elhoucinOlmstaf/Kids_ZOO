@@ -23,7 +23,7 @@ const Sign_Up = ({ navigation }) => {
   const [ShowEye, setShowEye] = useState(true);
   // const passwordInputRef = createRef();
 
-  const handleSignUp = () => {
+  const signUp = () => {
     setErrortext("");
     if (!FullName) return alert("Please fill Name");
     if (!Email) return alert("Please fill Email");
@@ -32,26 +32,27 @@ const Sign_Up = ({ navigation }) => {
     firebase
       .auth()
       .createUserWithEmailAndPassword(Email, Password)
-      .then((user) => {
-        alert("Registration Successful. Please Login to proceed");
-        console.log(user);
-        if (user) {
-          firebase
-            .auth()
-            .currentUser.updateProfile({
-              displayName: FullName,
-            })
-            .then(() => navigation.replace("Log_In"))
-            .then(() => {
-              firebase.auth().onAuthStateChanged((userData) => {
-                setuserData(userData);
-              });
-            })
-            .catch((error) => {
-              console.log(error);
-              setErrortext(error);
-            });
-        }
+      .then((result) => {
+        firebase
+          .firestore()
+          .collection("users")
+          .doc(firebase.auth().currentUser.uid)
+          .set({
+            displayName: FullName,
+            Email,
+            photoURL:null,
+            description:"",
+            age:"",
+          });
+      })
+      .then((res) => {
+        alert("Account Created succuffuly . Please Log In To countinue");
+        navigation.navigate("Log_In");
+      })
+      .then((res) => {
+        firebase.auth().onAuthStateChanged((userData) => {
+          setuserData(userData);
+        });
       })
       .catch((error) => {
         if (error.code === "auth/email-already-in-use") {
@@ -129,10 +130,7 @@ const Sign_Up = ({ navigation }) => {
         </View>
       </View>
       <View style={{ alignItems: "center" }}>
-        <TouchableOpacity
-          style={styles.loginBtn}
-          onPress={() => handleSignUp()}
-        >
+        <TouchableOpacity style={styles.loginBtn} onPress={signUp}>
           {IsLogged === false ? (
             <Text style={styles.loginText}>SIGNUP</Text>
           ) : (

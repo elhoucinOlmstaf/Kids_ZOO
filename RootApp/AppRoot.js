@@ -11,52 +11,66 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Ionicons } from "@expo/vector-icons";
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+
 // screens
 import Log_In from "../Sceens/Log_In";
 import Sign_Up from "../Sceens/Sign_Up";
 import HomeScreen from "../Sceens/HomeScreen";
 import SplashScreen from "../Sceens/SplashScreen";
 import UserResetPassword from "../Sceens/userRestePassword";
-import UserProfileScreen from "../Sceens/userProfileScreen";
+import UserProfileScreen from "../Sceens/UserProfileScreen";
+import EditeProfileScreen from "../Sceens/EditeProfileScreen";
 const Stack = createStackNavigator();
-// const Drawer = createDrawerNavigator();
+const Drawer = createDrawerNavigator();
+const Tab = createBottomTabNavigator();
 
 // stacks
 const StackApp = () => {
   return (
+    <Stack.Navigator initialRouteName="SplashScreen">
+      <Stack.Screen
+        name="Log_In"
+        component={Log_In}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Sign_Up"
+        component={Sign_Up}
+        options={{
+          title: "Create Account",
+          headerStyle: { backgroundColor: "#fcf5f3" },
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+        }}
+      />
+      <Stack.Screen
+        name="HomeScreen"
+        component={HomeScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="SplashScreen"
+        component={SplashScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="UserResetPassword" component={UserResetPassword} />
+      <Stack.Screen name="UserProfileScreen" component={UserProfileScreen} />
+      <Stack.Screen name="EditeProfileScreen" component={EditeProfileScreen} />
+    </Stack.Navigator>
+  );
+};
+
+
+const AppDrawer = () => {
+  return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="SplashScreen">
-        <Stack.Screen
-          name="Log_In"
-          component={Log_In}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Sign_Up"
-          component={Sign_Up}
-          options={{
-            title: "Create Account",
-            headerStyle: { backgroundColor: "#fcf5f3" },
-            headerTitleStyle: {
-              fontWeight: "bold",
-            },
-          }}
-        />
-        <Stack.Screen
-          name="HomeScreen"
-          component={HomeScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="SplashScreen"
-          component={SplashScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen name="UserResetPassword" component={UserResetPassword} />
-        <Stack.Screen name="UserProfileScreen" component={UserProfileScreen} />
-      </Stack.Navigator>
+      <Drawer.Navigator initialRouteName="StackApp">
+        <Drawer.Screen name="AppDrawer" component={StackApp} />
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 };
 
-export default StackApp;
+export default AppDrawer;

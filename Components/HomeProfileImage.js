@@ -1,58 +1,110 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Dimensions } from "react-native";
+import { View, Text, StyleSheet, Dimensions, ActivityIndicator, ActivityIndicatorBase } from "react-native";
 import { Avatar } from "react-native-elements";
 import { Header } from "react-native-elements";
 import { Entypo } from "@expo/vector-icons";
 import { auth } from "firebase/auth";
 import firebase from "../DataBase/FireBase/FireBase";
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { StatusBar } from "expo-status-bar";
+import { useFonts } from "expo-font";
+
 
 const HomeProfileImage = () => {
-  const navigation = useNavigation()
-  const [user, setUser] = useState();
-  useEffect(() => {
-    const subscriber = firebase.auth().onAuthStateChanged((user) => {
-      setUser(user);
-    });
-    return subscriber;
-  }, []);
+  const navigation = useNavigation();
+  const [userData, setUserData] = useState("");
+  const [isloadingComplet, setisloadingComplet] = useState(false);
+
+  // fonts
+  let [fontsLoaded] = useFonts({
+    "Inter-SemiBoldItalic":
+      "https://rsms.me/inter/font-files/Inter-SemiBoldItalic.otf?v=3.12",
+  });
+
+  // get user data
+  const getUserData = async () => {
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(firebase.auth().currentUser.uid)
+      .get()
+      .then((documentSnapshot) => {
+        setisloadingComplet(false);
+        if (documentSnapshot.exists) {
+          setUserData(documentSnapshot.data());
+        }
+      });
+  };
+
+  getUserData();
+
+  // sign out function
+  const signOut = () => {
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        AsyncStorage.removeItem("userData");
+      })
+      .then(() => {
+        navigation.navigate("Log_In");
+      })
+      .catch((error) => console.log(error));
+  };
+
   return (
     <View style={styles.container}>
+      <StatusBar style="light" backgroundColor="#C2185B" />
       <View style={styles.subContainer}>
         <View style={styles.header}>
-          <Avatar
-            onPress={() => navigation.navigate("UserProfileScreen")}
-            size="medium"
-            rounded
-            source={require("../Images/logo.png")}
-          />
+          {isloadingComplet === true ? (
+            <Avatar
+              onPress={() => navigation.navigate("UserProfileScreen")}
+              size="medium"
+              rounded
+              source={{ uri: userData.photoURL }}
+            />
+          ) : (
+            <Avatar
+              onPress={() => navigation.navigate("UserProfileScreen")}
+              size="medium"
+              rounded
+              source={{
+                uri: "https://image.flaticon.com/icons/png/512/599/599305.png",
+              }}
+            />
+          )}
+
           <Entypo
-            style={styles.imageStyle}
+            style={{ marginTop: 10 }}
             name="menu"
-            size={34}
+            size={40}
             color="black"
+            onPress={() => navigation.toggleDrawer()}
           />
         </View>
         <View style={styles.TextContainer}>
-          <Text
-            style={{
-              fontSize: 19,
-              letterSpacing: 3,
-            }}
-          >
-            Hello
-          </Text>
-          {user ? (
+          <Text style={styles.hello}>Hello</Text>
+          {isloadingComplet ? (
             <Text
               style={{
-                fontSize: 27,
-                fontWeight: "bold",
-                letterSpacing: 4,
+                fontSize: 19,
+                letterSpacing: 3,
               }}
             >
-              {user.displayName ? user.displayName : user}
+              {userData.displayName}
             </Text>
-          ) : null}
+          ) : (
+            <Avatar
+              onPress={() => navigation.navigate("UserProfileScreen")}
+              size="large"
+              rounded
+              source={{
+                uri: "https://image.flaticon.com/icons/png/512/5229/5229436.png",
+              }}
+            />
+          )}
         </View>
       </View>
     </View>
@@ -67,8 +119,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   subContainer: {
-    backgroundColor: "#d8c9b9",
-    height: 250,
+    backgroundColor: "#db9",
+    height: 200,
   },
   header: {
     marginTop: windowHeight - windowHeight + 35,
@@ -79,6 +131,11 @@ const styles = StyleSheet.create({
   TextContainer: {
     alignItems: "center",
     marginTop: -30,
+  },
+  hello: {
+    fontSize: 19,
+    color: "red",
+    fontFamily:"Inter-SemiBoldItalic"
   },
 });
 

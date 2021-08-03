@@ -24,14 +24,11 @@ const SplashScreen = ({ navigation }) => {
   const getUserData = useCallback(async () => {
     const response = await AsyncStorage.getItem("userData");
     setRedirect(response ? "HomeScreen" : "Log_In");
-    console.log(response);
   }, []);
 
   useEffect(() => {
-    setTimeout(() => {
-     getUserData();
-    }, 2000);
-   }, []);
+    getUserData();
+  }, []);
 
   useEffect(() => {
     if (redirect) {

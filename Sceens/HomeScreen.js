@@ -16,59 +16,39 @@ const HomeScreen = ({ navigation }) => {
   const DataList = [
     {
       id: 1,
-      title: "Option 1",
-      image: "https://img.icons8.com/color/70/000000/administrator-male.png",
-    },
-    {
-      id: 1,
-      title: "Option 2",
-      image: "https://img.icons8.com/color/70/000000/administrator-male.png",
-    },
-    {
-      id: 2,
-      title: "Option 3",
-      image: "https://img.icons8.com/color/70/000000/filled-like.png",
-    },
-    {
-      id: 3,
-      title: "Option 4",
-      image: "https://img.icons8.com/color/70/000000/facebook-like.png",
-    },
-    {
-      id: 4,
-      title: "Option 5",
-      image: "https://img.icons8.com/color/70/000000/shutdown.png",
-    },
-    {
-      id: 5,
-      title: "Option 6",
-      image: "https://img.icons8.com/color/70/000000/traffic-jam.png",
+      title: "Learning",
+      image: "https://i.postimg.cc/05Lhs0ZH/knowledge.png",
     },
     {
       id: 6,
-      title: "Option 7",
-      image: "https://img.icons8.com/dusk/70/000000/visual-game-boy.png",
+      title: "Stories",
+      image: "https://i.postimg.cc/0NWHHYbn/fairytale.png",
     },
     {
-      id: 8,
-      title: "Option 8",
-      image: "https://img.icons8.com/flat_round/70/000000/cow.png",
+      id: 2,
+      title: "Quizes",
+      image: "https://i.postimg.cc/rpyMmg9M/what.png",
     },
     {
-      id: 9,
-      title: "Option 9",
-      image: "https://img.icons8.com/color/70/000000/coworking.png",
+      id: 3,
+      title: "Words List",
+      image: "https://i.postimg.cc/htf0BRkB/dictionary.png",
     },
     {
-      id: 9,
-      title: "Option 10",
-      image: "https://img.icons8.com/nolan/70/000000/job.png",
+      id: 4,
+      title: "Facts",
+      image: "https://image.flaticon.com/icons/png/512/5167/5167414.png",
+    },
+    {
+      id: 5,
+      title: "Setting",
+      image: "https://image.flaticon.com/icons/png/512/439/439291.png",
     },
   ];
   return (
     <View style={styles.container}>
       <HomeProfileImage />
-      <View style={{ marginTop: 180 }}>
+      <View style={{ marginTop: -110 }}>
         <FlatList
           style={styles.list}
           contentContainerStyle={styles.listContainer}
@@ -103,10 +83,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginBottom: 10,
+    backgroundColor: "#db9",
   },
   list: {
     paddingHorizontal: 5,
-    backgroundColor: "#d8c9b9",
+    backgroundColor: "#db9",
+    position: "relative",
+    top: -100,
   },
   listContainer: {
     alignItems: "center",
@@ -155,10 +138,14 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   title: {
-    fontSize: 18,
+    fontSize: 19,
     flex: 1,
     alignSelf: "center",
-    color: "#696969",
+    color: "#800080",
+    textShadowColor: "#800080",
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 4,
+    fontWeight: "bold",
   },
 });
 
