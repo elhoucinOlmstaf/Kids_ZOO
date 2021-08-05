@@ -8,42 +8,68 @@ import {
   ActivityIndicator,
 } from "react-native";
 import firebase from "firebase";
-
-const storage = firebase.storage();
+import AppLoading from "expo-app-loading";
+import useFonts from "../hooks/useFonts";
 
 export default function UserProfileScreen({ navigation }) {
   const [userData, setUserData] = useState("");
-  const [uploading, setUploading] = useState("");
+  const [IsReady, SetIsReady] = useState(false);
+
+  const LoadFonts = async () => {
+    await useFonts();
+  };
+
+  if (!IsReady) {
+    return (
+      <AppLoading
+        startAsync={LoadFonts}
+        onFinish={() => SetIsReady(true)}
+        onError={() => {}}
+      />
+    );
+  }
 
   const getUserData = async () => {
-    await firebase
-      .firestore()
-      .collection("users")
-      .doc(firebase.auth().currentUser.uid)
-      .get()
-      .then((documentSnapshot) => {
-        if (documentSnapshot.exists) {
-          setUserData(documentSnapshot.data());
-        }
-      });
+    const user = firebase.auth().currentUser;
+    if (user !== null) {
+      await firebase
+        .firestore()
+        .collection("users")
+        .doc(firebase.auth().currentUser.uid)
+        .get()
+        .then((documentSnapshot) => {
+          if (documentSnapshot.exists) {
+            setUserData(documentSnapshot.data());
+          }
+        });
+    }
   };
 
   getUserData();
 
   return (
     <View style={styles.container}>
-      <Text style={styles.ProfileText}>My Profile</Text>
       <View style={styles.subContainer}>
         <View style={styles.imgContainer}>
-          <Image style={styles.img} source={{ uri: userData.photoURL }} />
+          {userData.photoURL === null ? (
+            <Image
+              style={styles.img}
+              source={{
+                uri: "https://image.flaticon.com/icons/png/512/3177/3177440.png",
+              }}
+            />
+          ) : (
+            <Image style={styles.img} source={{ uri: userData.photoURL }} />
+          )}
         </View>
-        <Text style={styles.name}>{userData.displayName}</Text>
+        <Text style={{ fontFamily: "MontserratBold", fontSize: 43 }}>
+          {userData.displayName}
+        </Text>
       </View>
       <View style={styles.info}>
-        <Text style={styles.infText}>I Am  {userData.displayName}</Text>
+        <Text style={styles.infText}>I Am {userData.displayName}</Text>
         <Text style={styles.infText}>I Am {userData.age}</Text>
-        <Text style={styles.infText}>I Am {userData.description}</Text>
-        <Text style={styles.infText}>myEami {userData.Email}</Text>
+        <Text style={styles.infText}>I Am A Productive person</Text>
       </View>
 
       <TouchableOpacity
@@ -57,22 +83,9 @@ export default function UserProfileScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-  ProfileText: {
-    fontSize: 25,
-    fontStyle: "italic",
-    letterSpacing: 3,
-    marginLeft: 20,
-    marginVertical: 20,
-    fontWeight: "bold",
-    color: "brown",
-  },
   subContainer: {
     alignItems: "center",
-    marginTop: 60,
+    marginTop: 10,
   },
   imgContainer: {
     width: 150,
@@ -92,19 +105,30 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "bold",
     letterSpacing: 2,
+    fontFamily: "MontserratBold",
   },
   info: {
     marginVertical: 30,
     marginHorizontal: 20,
+    marginTop: 40,
   },
   infText: {
-    fontSize: 19,
+    margin: 7,
+    fontFamily: "sweetcandy",
+    fontSize: 40,
+    color: "blue",
+    textAlign: "center",
   },
   btn: {
     alignItems: "center",
+    paddingBottom:100
   },
   btnText: {
     padding: 10,
-    backgroundColor: "orange",
+    backgroundColor: "#F93822FF",
+    fontFamily: "MontserratBold",
+    fontSize: 23,
+    color: "#fff",
+    borderRadius: 15,
   },
 });

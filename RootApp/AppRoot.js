@@ -11,7 +11,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Ionicons } from "@expo/vector-icons";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 
 // screens
 import Log_In from "../Sceens/Log_In";
@@ -23,7 +23,7 @@ import UserProfileScreen from "../Sceens/UserProfileScreen";
 import EditeProfileScreen from "../Sceens/EditeProfileScreen";
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
-const Tab = createBottomTabNavigator();
+const Tab = createMaterialBottomTabNavigator();
 
 // stacks
 const StackApp = () => {
@@ -56,12 +56,31 @@ const StackApp = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen name="UserResetPassword" component={UserResetPassword} />
-      <Stack.Screen name="UserProfileScreen" component={UserProfileScreen} />
-      <Stack.Screen name="EditeProfileScreen" component={EditeProfileScreen} />
+      <Stack.Screen
+        name="UserProfileScreen"
+        component={UserProfileScreen}
+        options={{ title: "My Profile" }}
+      />
+      <Stack.Screen
+        name="EditeProfileScreen"
+        component={EditeProfileScreen}
+        options={{ title: "Create New Profile" }}
+      />
     </Stack.Navigator>
   );
 };
 
+const ss = async () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="EditeProfileScreen"
+        component={EditeProfileScreen}
+        options={{ title: "Create New Profile" }}
+      />
+    </Stack.Navigator>
+  );
+};
 
 const AppDrawer = () => {
   return (
@@ -72,5 +91,6 @@ const AppDrawer = () => {
     </NavigationContainer>
   );
 };
+
 
 export default AppDrawer;

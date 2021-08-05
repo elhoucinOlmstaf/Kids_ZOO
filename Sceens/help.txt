@@ -1,1 +1,7 @@
-  allow read, write: if true;
+useEffect(() => {
+  const timeout = setTimeout(() => {
+    setIsLoading(false);
+  }, 1000);
+
+  return () => clearTimeout(timeout);
+}, []);

@@ -12,9 +12,9 @@ import { Entypo } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import firebase from "firebase";
-import uuid from "uuid";
-import "@firebase/auth";
 const storage = firebase.storage();
+import AppLoading from "expo-app-loading";
+import useFonts from "../hooks/useFonts";
 
 const EditeProfileScreen = () => {
   const navigation = useNavigation();
@@ -26,6 +26,7 @@ const EditeProfileScreen = () => {
   const [userData, setUserData] = useState("");
   const [uploading, setUploading] = useState(false);
   const [Update, setUpdate] = useState(false);
+  const [IsReady, SetIsReady] = useState(false);
 
   const getPermission = async () => {
     if (Platform.OS !== "web") {
@@ -50,6 +51,7 @@ const EditeProfileScreen = () => {
   };
 
   const pickImage = async () => {
+    getPermission();
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -58,6 +60,7 @@ const EditeProfileScreen = () => {
     });
     if (!result.cancelled) {
       setImage(result.uri);
+      setUploading(true);
     }
   };
 
@@ -82,11 +85,11 @@ const EditeProfileScreen = () => {
     try {
       setUploading(true);
       blob = await getPictureBlob(image);
-      const ref = await storage.ref().child("imageProfile/" + uuid.v4());
+      const ref = await storage.ref().child("imageProfile/");
       const snapshot = await ref.put(blob);
       return await snapshot.ref.getDownloadURL();
     } catch (e) {
-      alert(e.message);
+      alert("Please Select a Photo First");
       setUploading(false);
       setUpdate(false);
     } finally {
@@ -98,12 +101,17 @@ const EditeProfileScreen = () => {
   };
 
   const UpdateImage = async () => {
+    if (FullName === "") {
+      return alert("Plaese update the name or rewrite the old one");
+    }
+    if (Age === "") {
+      return alert("Plaese update the age or rewrite the old one");
+    }
+
     setUpdate(true);
     let imgUrl = await uploadImageToBucket();
-    if (imgUrl === null && userData.photoURL) {
-      imgUrl = userData.photoURL;
-    }
-    firebase
+
+    await firebase
       .firestore()
       .collection("users")
       .doc(firebase.auth().currentUser.uid)
@@ -116,18 +124,29 @@ const EditeProfileScreen = () => {
       })
       .then(() => navigation.navigate("UserProfileScreen"))
       .catch((err) => {
-        alert(err);
+        alert(err, "Please Select a Photo First");
         setUploading(false);
         setUpdate(false);
       });
   };
 
   useEffect(() => {
-    getPermission();
-  }, []);
-  useEffect(() => {
     getUserData();
   }, []);
+
+  const LoadFonts = async () => {
+    await useFonts();
+  };
+
+  if (!IsReady) {
+    return (
+      <AppLoading
+        startAsync={LoadFonts}
+        onFinish={() => SetIsReady(true)}
+        onError={() => {}}
+      />
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -140,9 +159,17 @@ const EditeProfileScreen = () => {
             color="black"
             onPress={pickImage}
           />
-          <Image style={styles.imgPro} source={{ uri: image }} />
+          {uploading ? (
+            <Image style={styles.imgPro} source={{ uri: image }} />
+          ) : (
+            <Image
+              style={styles.imgPro}
+              source={{
+                uri: "https://image.flaticon.com/icons/png/512/3177/3177440.png",
+              }}
+            />
+          )}
         </View>
-
       </View>
       <View style={styles.inputs}>
         <View style={styles.sectionStyle}>
@@ -159,7 +186,7 @@ const EditeProfileScreen = () => {
           <TextInput
             style={styles.textInput}
             placeholder="Update Your Eamil...."
-            value={Email}
+            value={userData.Email}
             onChangeText={setEmail}
           />
         </View>
@@ -185,11 +212,14 @@ const EditeProfileScreen = () => {
         </View>
       </View>
       <View style={{ flex: 1, alignItems: "center" }}>
-        <TouchableOpacity onPress={UpdateImage} style={styles.update}>
+        <TouchableOpacity
+          onPress={UpdateImage}
+          style={styles.update}
+        >
           {Update ? (
             <ActivityIndicator size="large" color="#00ff00" />
           ) : (
-            <Text>Update</Text>
+            <Text style={{fontFamily: "feast", fontSize: 22 , color:"#fff"}}>Update</Text>
           )}
         </TouchableOpacity>
       </View>
@@ -204,6 +234,7 @@ const styles = StyleSheet.create({
   },
   Subcontainer: {
     alignItems: "center",
+    marginTop: 10,
   },
   imgCon: {
     width: 150,
@@ -256,11 +287,12 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
   update: {
-    backgroundColor: "tomato",
     padding: 10,
-    borderRadius: 50,
-    paddingHorizontal: 30,
-    marginTop: 10,
+    backgroundColor: "#F93822FF",
+  marginTop:16,
+    fontSize: 23,
+    color: "#fff",
+    borderRadius: 15,
   },
   Entypo: {
     position: "relative",

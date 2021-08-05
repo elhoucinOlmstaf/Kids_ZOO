@@ -7,7 +7,11 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
+import { Dimensions } from "react-native";
+import { Avatar } from "react-native-elements";
+import { Entypo } from "@expo/vector-icons";
 
 // screen
 import HomeProfileImage from "../Components/HomeProfileImage";
@@ -47,52 +51,67 @@ const HomeScreen = ({ navigation }) => {
   ];
   return (
     <View style={styles.container}>
-      <HomeProfileImage />
-      <View style={{ marginTop: -110 }}>
-        <FlatList
-          style={styles.list}
-          contentContainerStyle={styles.listContainer}
-          data={DataList}
-          horizontal={false}
-          numColumns={2}
-          keyExtractor={(item) => {
-            return item.id;
-          }}
-          renderItem={({ item }) => {
-            return (
-              <TouchableOpacity style={styles.card}>
-                <View style={styles.cardFooter}></View>
-                <Image style={styles.cardImage} source={{ uri: item.image }} />
-                <View style={styles.cardHeader}>
-                  <View
-                    style={{ alignItems: "center", justifyContent: "center" }}
-                  >
-                    <Text style={styles.title}>{item.title}</Text>
+      <View style={styles.Header}>
+        <HomeProfileImage />
+        <View>
+          <FlatList
+            style={styles.list}
+            contentContainerStyle={styles.listContainer}
+            data={DataList}
+            horizontal={false}
+            numColumns={2}
+            keyExtractor={(item) => {
+              return item.id;
+            }}
+            renderItem={({ item }) => {
+              return (
+                <TouchableOpacity style={styles.card}>
+                  <View style={styles.cardFooter}></View>
+                  <Image
+                    style={styles.cardImage}
+                    source={{ uri: item.image }}
+                  />
+                  <View style={styles.cardHeader}>
+                    <View
+                      style={{ alignItems: "center", justifyContent: "center" }}
+                    >
+                      <Text style={styles.title}>{item.title}</Text>
+                    </View>
                   </View>
-                </View>
-              </TouchableOpacity>
-            );
-          }}
-        />
+                </TouchableOpacity>
+              );
+            }}
+          />
+        </View>
       </View>
     </View>
   );
 };
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginBottom: 10,
     backgroundColor: "#db9",
   },
+  Header: {
+    marginVertical: windowHeight - windowHeight + 40,
+    marginHorizontal: windowWidth - windowWidth + 10,
+    backgroundColor: "#db9",
+  },
+
   list: {
     paddingHorizontal: 5,
     backgroundColor: "#db9",
     position: "relative",
-    top: -100,
+    top: windowHeight - windowHeight + 20,
+
   },
   listContainer: {
     alignItems: "center",
+    paddingBottom: 280,
+    zIndex:10
   },
   card: {
     shadowColor: "#00000021",
@@ -106,7 +125,7 @@ const styles = StyleSheet.create({
     elevation: 12,
     marginVertical: 10,
     backgroundColor: "#f1ebe2",
-    flexBasis: "42%",
+    flexBasis: windowWidth / 2.4,
     marginHorizontal: 10,
     borderRadius: 30,
   },
