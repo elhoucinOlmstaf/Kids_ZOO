@@ -5,3 +5,21 @@ useEffect(() => {
 
   return () => clearTimeout(timeout);
 }, []);
+
+
+<Animated.View
+        style={{
+          transform: [{ translateY: translateY }],
+          position: "absolute",
+          top:0,
+          left:0
+        }}
+      >
+        <View
+          style={{
+            alignItems: "center",
+          }}
+        >
+          <Text style={styles.headerText}>Happy Learning 👏 </Text>
+        </View>
+      </Animated.View>

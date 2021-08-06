@@ -21,6 +21,8 @@ import SplashScreen from "../Sceens/SplashScreen";
 import UserResetPassword from "../Sceens/userRestePassword";
 import UserProfileScreen from "../Sceens/UserProfileScreen";
 import EditeProfileScreen from "../Sceens/EditeProfileScreen";
+import learningPage from "../Sceens/learning/learningPage";
+
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -66,6 +68,20 @@ const StackApp = () => {
         component={EditeProfileScreen}
         options={{ title: "Create New Profile" }}
       />
+      <Stack.Screen
+        name="learningPage"
+        component={learningPage}
+        options={({ route }) => ({
+          title: route.params.Title,
+          headerStyle: {
+            backgroundColor: "#ccc",
+          },
+          headerTintColor: "#fff",
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+        })}
+      />
     </Stack.Navigator>
   );
 };
@@ -91,6 +107,5 @@ const AppDrawer = () => {
     </NavigationContainer>
   );
 };
-
 
 export default AppDrawer;

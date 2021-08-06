@@ -3,20 +3,21 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
   Image,
   FlatList,
   TouchableOpacity,
-  ScrollView,
 } from "react-native";
 import { Dimensions } from "react-native";
-import { Avatar } from "react-native-elements";
-import { Entypo } from "@expo/vector-icons";
+
 
 // screen
 import HomeProfileImage from "../Components/HomeProfileImage";
 
 const HomeScreen = ({ navigation }) => {
+  const MoveTo = (item) => {
+    navigation.navigate("learningPage", { itemId: item.id, Title: item.title });
+  };
+
   const DataList = [
     {
       id: 1,
@@ -65,7 +66,10 @@ const HomeScreen = ({ navigation }) => {
             }}
             renderItem={({ item }) => {
               return (
-                <TouchableOpacity style={styles.card}>
+                <TouchableOpacity
+                  style={styles.card}
+                  onPress={() => MoveTo(item)}
+                >
                   <View style={styles.cardFooter}></View>
                   <Image
                     style={styles.cardImage}
@@ -106,12 +110,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#db9",
     position: "relative",
     top: windowHeight - windowHeight + 20,
-
   },
   listContainer: {
     alignItems: "center",
     paddingBottom: 280,
-    zIndex:10
+    zIndex: 10,
   },
   card: {
     shadowColor: "#00000021",

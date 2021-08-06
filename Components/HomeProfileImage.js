@@ -64,20 +64,6 @@ const HomeProfileImage = () => {
     );
   }
 
-  // sign out function
-  const signOut = () => {
-    firebase
-      .auth()
-      .signOut()
-      .then(() => {
-        AsyncStorage.removeItem("userData");
-      })
-      .then(() => {
-        navigation.navigate("Log_In");
-      })
-      .catch((error) => console.log(error));
-  };
-
   return (
     <View>
       <View style={styles.subHeader}>
