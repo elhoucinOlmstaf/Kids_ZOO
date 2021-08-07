@@ -22,6 +22,7 @@ import UserResetPassword from "../Sceens/userRestePassword";
 import UserProfileScreen from "../Sceens/UserProfileScreen";
 import EditeProfileScreen from "../Sceens/EditeProfileScreen";
 import learningPage from "../Sceens/learning/learningPage";
+import LearningPageShow from "../Sceens/learning/LearningPageShow";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -80,6 +81,13 @@ const StackApp = () => {
           headerTitleStyle: {
             fontWeight: "bold",
           },
+        })}
+      />
+      <Stack.Screen
+        name="LearningPageShow"
+        component={LearningPageShow}
+        options={({ route }) => ({
+          title: route.params.Title,
         })}
       />
     </Stack.Navigator>

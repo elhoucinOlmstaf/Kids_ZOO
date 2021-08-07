@@ -12,9 +12,12 @@ import {
 import { CATEGORIES } from "../DataBase/DummyData/LearningListCategory";
 import useFonts from "../hooks/useFonts";
 import AppLoading from "expo-app-loading";
+import { useNavigation } from "@react-navigation/native";
 
 const LearningComponent = () => {
   const [IsReady, SetIsReady] = useState(false);
+  const navigation = useNavigation();
+
   //load fonts
   const LoadFonts = async () => {
     await useFonts();
@@ -42,15 +45,15 @@ const LearningComponent = () => {
         style={{
           transform: [{ translateY: translateY }],
           alignItems: "center",
-          paddingVertical:10
+          paddingVertical: 10,
         }}
       >
-
-          <Text style={styles.headerText}>Happy Learning 👏 </Text>
-
+        <Text style={styles.headerText}>Happy Learning 👏 </Text>
       </Animated.View>
     );
   };
+
+  
 
   return (
     <View style={styles.container}>
@@ -71,6 +74,12 @@ const LearningComponent = () => {
           return (
             <TouchableOpacity
               style={{ ...styles.card, ...{ backgroundColor: item.color } }}
+              onPress={() =>
+                navigation.navigate("LearningPageShow", {
+                  itemId: item.id,
+                  Title: item.title,
+                })
+              }
             >
               <View style={styles.cardFooter}></View>
               <Image style={styles.cardImage} source={{ uri: item.Image }} />

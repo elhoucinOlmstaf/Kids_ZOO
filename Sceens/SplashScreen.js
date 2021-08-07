@@ -11,7 +11,7 @@ import {
 } from "react-native";
 
 import { auth } from "firebase/auth";
-import firebase from "../DataBase/FireBase/FireBase";
+import firebase from "../DataBase/FireBase/Firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SplashScreen = ({ navigation }) => {

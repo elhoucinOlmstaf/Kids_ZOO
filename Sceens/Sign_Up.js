@@ -8,10 +8,10 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import { auth } from "firebase/auth";
+
 import { Entypo } from "@expo/vector-icons";
 
-import firebase from "../DataBase/FireBase/FireBase";
+import firebase from "../DataBase/FireBase/Firebase";
 const windowHeight = Dimensions.get("window").height;
 const Sign_Up = ({ navigation }) => {
   const [FullName, setFullName] = useState("");
@@ -40,9 +40,9 @@ const Sign_Up = ({ navigation }) => {
           .set({
             displayName: FullName,
             Email,
-            photoURL:null,
-            description:"",
-            age:"",
+            photoURL: null,
+            description: "",
+            age: "",
           });
       })
       .then((res) => {

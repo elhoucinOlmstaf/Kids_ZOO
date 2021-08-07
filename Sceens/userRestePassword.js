@@ -9,7 +9,7 @@ import {
   Text,
 } from "react-native";
 import { Button, Input, Icon } from "react-native-elements";
-import firebase from "../DataBase/FireBase/FireBase";
+import firebase from "../DataBase/FireBase/Firebase";
 import { auth } from "firebase/auth";
 import { Entypo } from "@expo/vector-icons";
 

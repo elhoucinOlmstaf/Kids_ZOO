@@ -11,7 +11,7 @@ import {
 } from "react-native";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import firebase from "../DataBase/FireBase/FireBase";
+import firebase from "../DataBase/FireBase/Firebase";
 import { auth } from "firebase/auth";
 import { Entypo } from "@expo/vector-icons";
 
