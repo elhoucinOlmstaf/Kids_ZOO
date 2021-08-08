@@ -1,23 +1,32 @@
-
 import React, { useRef, useEffect, useState } from "react";
 import {
   View,
   SafeAreaView,
   Text,
   Image,
-  FlatList,
+  ImageBackground,
   Dimensions,
   Animated,
   StyleSheet,
+  Button,
 } from "react-native";
 
 import songs from "../data";
 import Controller from "./Controller";
-
+import { Audio } from "expo-av";
 const { width, height } = Dimensions.get("window");
-
 export default function Numbers() {
   const scrollX = useRef(new Animated.Value(0)).current;
+  const [sound, setSound] = React.useState();
+
+  React.useEffect(() => {
+    return sound
+      ? () => {
+          console.log("Unloading Sound");
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [sound]);
 
   const slider = useRef(null);
   const [songIndex, setSongIndex] = useState(0);
@@ -36,14 +45,36 @@ export default function Numbers() {
     };
   }, []);
 
-  const goNext = () => {
+  async function playSound() {
+    const { sound } = await Audio.Sound.createAsync({
+      uri: songs[songIndex].audio,
+    });
+    console.log(songIndex);
+    setSound(sound);
+    await sound.playAsync();
+  }
+
+  const goNext = async () => {
+    const { sound } = await Audio.Sound.createAsync({
+      uri: songs[(songIndex + 1) % songs.length].audio,
+    });
+
+    setSound(sound);
+    await sound.playAsync();
     slider.current.scrollToOffset({
-      offset: (songIndex + 1) * width,
+      offset: ((songIndex + 1) % songs.length) * width,
     });
   };
-  const goPrv = () => {
+
+  const goPrv = async () => {
+    const { sound } = await Audio.Sound.createAsync({
+      uri: songs[(songIndex - 1) % songs.length].audio,
+    });
+
+    setSound(sound);
+    await sound.playAsync();
     slider.current.scrollToOffset({
-      offset: (songIndex - 1) * width,
+      offset: ((songIndex - 1) % songs.length) * width,
     });
   };
 
@@ -64,38 +95,44 @@ export default function Numbers() {
         }}
       >
         <Animated.Image
-          source={{uri:item.image}}
+          source={{ uri: item.image }}
           style={{ width: 320, height: 320, borderRadius: 5 }}
         />
       </Animated.View>
     );
   };
-
+  const BgImage = require("../../Images/Theme.png");
   return (
-    <SafeAreaView style={styles.container}>
-      <SafeAreaView style={{ height: 320 }}>
-        <Animated.FlatList
-          ref={slider}
-          horizontal
-          pagingEnabled
-          showsHorizontalScrollIndicator={false}
-          scrollEventThrottle={16}
-          data={songs}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          onScroll={Animated.event(
-            [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-            { useNativeDriver: true }
-          )}
-        />
-      </SafeAreaView>
-      <View>
-        <Text style={styles.title}>{songs[songIndex].title}</Text>
-        <Text style={styles.artist}>{songs[songIndex].artist}</Text>
-      </View>
+    <ImageBackground
+      source={BgImage}
+      resizeMode="cover"
+      style={styles.backgroundImage}
+    >
+      <SafeAreaView style={styles.container}>
+        <SafeAreaView style={{ height: 320 }}>
+          <Animated.FlatList
+            ref={slider}
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            scrollEventThrottle={16}
+            data={songs}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+            onScroll={Animated.event(
+              [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+              { useNativeDriver: true }
+            )}
+          />
+        </SafeAreaView>
+        <View>
+          <Text style={styles.title}>{songs[songIndex].title}</Text>
+          <Text style={styles.artist}>{songs[songIndex].artist}</Text>
+        </View>
 
-      <Controller onNext={goNext} onPrv={goPrv} />
-    </SafeAreaView>
+        <Controller onNext={goNext} onPrv={goPrv} onStart={playSound} />
+      </SafeAreaView>
+    </ImageBackground>
   );
 }
 
@@ -113,6 +150,12 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "space-evenly",
     height: height,
-    maxHeight: 500,
+  },
+  backgroundImage: {
+    width: width,
+    height: height,
+    position: "absolute",
+    top: 0,
+    left: 0,
   },
 });

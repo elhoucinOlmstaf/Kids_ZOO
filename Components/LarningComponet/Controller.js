@@ -2,13 +2,13 @@ import React from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
-export default function Controller({ onNext, onPrv }) {
+export default function Controller({ onNext, onPrv ,onStart}) {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={onPrv}>
         <MaterialIcons name="skip-previous" size={45} />
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={onStart}>
         <MaterialIcons name="pause" size={45} />
       </TouchableOpacity>
       <TouchableOpacity onPress={onNext}>

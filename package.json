@@ -41,7 +41,8 @@
     "react-native-screens": "^3.4.0",
     "react-native-snap-carousel": "^3.9.1",
     "react-native-vector-icons": "^8.1.0",
-    "react-native-web": "^0.17.1"
+    "react-native-web": "^0.17.1",
+    "expo-av": "~9.2.3"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"
