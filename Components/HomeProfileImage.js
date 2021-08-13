@@ -4,16 +4,11 @@ import {
   Text,
   StyleSheet,
   Dimensions,
-  ActivityIndicator,
-  ActivityIndicatorBase,
 } from "react-native";
 import { Avatar } from "react-native-elements";
 import { Entypo } from "@expo/vector-icons";
 import firebase from "../DataBase/FireBase/Firebase";
 import { useNavigation } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { StatusBar } from "expo-status-bar";
-import * as Font from "expo-font";
 import AppLoading from "expo-app-loading";
 import useFonts from "../hooks/useFonts";
 

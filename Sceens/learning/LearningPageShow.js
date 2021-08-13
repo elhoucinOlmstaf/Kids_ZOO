@@ -3,46 +3,39 @@ import { StyleSheet, Text, View } from "react-native";
 
 // importing Screensk
 import Numbers from "../../Components/LarningComponet/Numbers";
+import Alphabet from "../../Components/LarningComponet/Alphabet";
+import FamilyMember from "../../Components/LarningComponet/FamilyMember";
+import BodyParts from "../../Components/LarningComponet/BodyParts";
+import Sport from "../../Components/LarningComponet/Sport";
+import Animals from "../../Components/LarningComponet/Animals";
+import Food from "../../Components/LarningComponet/Food";
+import Jobs from "../../Components/LarningComponet/Jobs";
 
 const LearningPageShow = ({ route }) => {
   const { itemId, Title } = route.params;
   if (itemId === 1) {
-    return <Numbers />;
+    return <Alphabet />;
   }
   if (itemId === 2) {
-    return (
-      <View>
-        <Text>stories</Text>
-      </View>
-    );
+    return <Numbers />;
   }
   if (itemId === 3) {
-    return (
-      <View>
-        <Text>hh</Text>
-      </View>
-    );
+    return <BodyParts />;
   }
   if (itemId === 4) {
-    return (
-      <View>
-        <Text>hh</Text>
-      </View>
-    );
+    return <Sport />;
   }
   if (itemId === 5) {
-    return (
-      <View>
-        <Text>hh</Text>
-      </View>
-    );
+    return <Jobs />;
   }
   if (itemId === 6) {
-    return (
-      <View>
-        <Text>hh</Text>
-      </View>
-    );
+    return <FamilyMember />;
+  }
+  if (itemId === 7) {
+    return <Animals />;
+  }
+  if (itemId === 8) {
+    return <Food />;
   }
 };
 

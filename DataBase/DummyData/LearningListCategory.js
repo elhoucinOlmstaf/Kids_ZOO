@@ -11,19 +11,19 @@ export const CATEGORIES = [
     2,
     "Numbers",
     "https://image.flaticon.com/icons/png/512/709/709337.png",
-    "#CCFF99"
+    "#b3e3ef"
   ),
   new Category(
     3,
-    "Shapes",
-    "https://image.flaticon.com/icons/png/512/2077/2077887.png",
+    "Body Parts",
+    "https://image.flaticon.com/icons/png/512/4178/4178748.png",
     "#9eecff"
   ),
   new Category(
     4,
     "Sports",
     "https://image.flaticon.com/icons/png/512/1198/1198314.png",
-    "#47fced"
+    "#e0f1f0"
   ),
   new Category(
     5,
@@ -45,32 +45,13 @@ export const CATEGORIES = [
   ),
   new Category(
     8,
-    "School",
-    "https://image.flaticon.com/icons/png/512/4472/4472550.png",
+    "Food",
+    "https://image.flaticon.com/icons/png/512/2922/2922037.png",
     "#ff8f8f"
   ),
-  new Category(
-    9,
-    "Kitchen",
-    "https://image.flaticon.com/icons/png/512/1698/1698742.png",
-    "#fdaad3"
-  ),
-  new Category(
-    10,
-    "Food",
-    "https://image.flaticon.com/icons/png/512/1211/1211025.png",
-    "#a99ecc"
-  ),
-  new Category(
-    11,
-    "Fruits",
-    "https://image.flaticon.com/icons/png/512/3187/3187635.png",
-    "#b3e3ef"
-  ),
-  new Category(
-    12,
-    "Vegetables",
-    "https://image.flaticon.com/icons/png/512/2372/2372334.png",
-    "#e0d5f0"
-  ),
 ];
+
+/*
+   #e0d5f0
+    b3e3ef
+ */

@@ -10,8 +10,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-
-import Numberdata from "../../DataBase/DummyData/Numberdata";
+import AlphabetData from "../../DataBase/DummyData/alphabetData";
 import { Audio } from "expo-av";
 import useFonts from "../../hooks/useFonts";
 import AppLoading from "expo-app-loading";
@@ -19,13 +18,12 @@ import AppLoading from "expo-app-loading";
 const { width, height } = Dimensions.get("window");
 export default function Numbers() {
   const scrollX = useRef(new Animated.Value(0)).current;
-  const [sound, setSound] = React.useState();
+  const [sound, setSound] = React.useState(0);
   const [IsReady, SetIsReady] = useState(false);
 
   React.useEffect(() => {
     return sound
       ? () => {
-          console.log("Unloading Sound");
           sound.unloadAsync();
         }
       : undefined;
@@ -41,6 +39,7 @@ export default function Numbers() {
     scrollX.addListener(({ value }) => {
       const val = Math.round(value / width);
       setSongIndex(val);
+      console.log(val);
     });
 
     return () => {
@@ -50,7 +49,7 @@ export default function Numbers() {
 
   async function playSound() {
     const { sound } = await Audio.Sound.createAsync({
-      uri: Numberdata[songIndex].audio,
+      uri: AlphabetData[songIndex].audio,
     });
     console.log(songIndex);
     setSound(sound);
@@ -59,24 +58,22 @@ export default function Numbers() {
 
   const goNext = async () => {
     slider.current.scrollToOffset({
-      offset: ((songIndex + 1) % Numberdata.length) * width,
+      offset: ((songIndex + 1) % AlphabetData.length) * width,
     });
     const { sound } = await Audio.Sound.createAsync({
-      uri: Numberdata[(songIndex + 1) % Numberdata.length].audio,
+      uri: AlphabetData[(songIndex + 1) % AlphabetData.length].audio,
     });
-
     setSound(sound);
     await sound.playAsync();
   };
 
   const goPrv = async () => {
     slider.current.scrollToOffset({
-      offset: ((songIndex - 1) % Numberdata.length) * width,
+      offset: ((songIndex - 1) % AlphabetData.length) * width,
     });
     const { sound } = await Audio.Sound.createAsync({
-      uri: Numberdata[(songIndex - 1) % Numberdata.length].audio,
+      uri: AlphabetData[(songIndex - 1) % AlphabetData.length].audio,
     });
-
     setSound(sound);
     await sound.playAsync();
   };
@@ -87,7 +84,6 @@ export default function Numbers() {
         style={{
           alignItems: "center",
           width: width,
-
           transform: [
             {
               translateX: Animated.multiply(
@@ -98,10 +94,19 @@ export default function Numbers() {
           ],
         }}
       >
-        <Animated.Image
-          source={{ uri: item.image }}
-          style={{ width: 320, height: 320, borderRadius: 5 }}
-        />
+        <Text
+          style={{
+            fontSize: 220,
+            textAlign: "center",
+            textTransform: "capitalize",
+            fontFamily: "feast",
+            color: "purple",
+            width: width,
+            color: item.color,
+          }}
+        >
+          {item.title}
+        </Text>
       </Animated.View>
     );
   };
@@ -135,9 +140,9 @@ export default function Numbers() {
             pagingEnabled
             showsHorizontalScrollIndicator={false}
             scrollEventThrottle={16}
-            data={Numberdata}
+            data={AlphabetData}
             renderItem={renderItem}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item.title}
             onScroll={Animated.event(
               [{ nativeEvent: { contentOffset: { x: scrollX } } }],
               { useNativeDriver: true }
@@ -145,12 +150,19 @@ export default function Numbers() {
           />
         </SafeAreaView>
         <View style={{ marginTop: -80 }}>
-          <Text style={styles.title}>{Numberdata[songIndex].title}</Text>
-          <Text style={styles.artist}>{Numberdata[songIndex].artist}</Text>
+          <View style={{ alignItems: "center" }}>
+            <Image
+              style={{ width: 120, height: 120 }}
+              source={{
+                uri: AlphabetData[songIndex].ImageUrl,
+              }}
+            />
+          </View>
+          <Text style={styles.artist}>{AlphabetData[songIndex].word}</Text>
         </View>
 
         <View style={styles.btns}>
-        <TouchableOpacity onPress={goPrv}>
+          <TouchableOpacity onPress={goPrv}>
             {songIndex > 0 ? (
               <Image
                 style={{ width: 100, height: 100 }}
@@ -192,11 +204,11 @@ const styles = StyleSheet.create({
     fontFamily: "feast",
   },
   artist: {
-    fontSize: 21,
+    fontSize: 35,
     textAlign: "center",
     textTransform: "capitalize",
-    fontFamily: "feast",
-    color: "purple",
+    fontFamily: "sweetcandy",
+    color: "red",
   },
   container: {
     height: height,

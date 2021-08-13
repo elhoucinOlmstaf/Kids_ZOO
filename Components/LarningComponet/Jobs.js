@@ -11,13 +11,13 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import Numberdata from "../../DataBase/DummyData/Numberdata";
+import jobs from '../../DataBase/DummyData/jobs'
 import { Audio } from "expo-av";
 import useFonts from "../../hooks/useFonts";
 import AppLoading from "expo-app-loading";
 
 const { width, height } = Dimensions.get("window");
-export default function Numbers() {
+export default function Food() {
   const scrollX = useRef(new Animated.Value(0)).current;
   const [sound, setSound] = React.useState();
   const [IsReady, SetIsReady] = useState(false);
@@ -50,33 +50,30 @@ export default function Numbers() {
 
   async function playSound() {
     const { sound } = await Audio.Sound.createAsync({
-      uri: Numberdata[songIndex].audio,
+      uri: jobs[songIndex].audio,
     });
-    console.log(songIndex);
     setSound(sound);
     await sound.playAsync();
   }
 
   const goNext = async () => {
     slider.current.scrollToOffset({
-      offset: ((songIndex + 1) % Numberdata.length) * width,
+      offset: ((songIndex + 1) % jobs.length) * width,
     });
     const { sound } = await Audio.Sound.createAsync({
-      uri: Numberdata[(songIndex + 1) % Numberdata.length].audio,
+      uri: jobs[(songIndex + 1) % jobs.length].audio,
     });
-
     setSound(sound);
     await sound.playAsync();
   };
 
   const goPrv = async () => {
     slider.current.scrollToOffset({
-      offset: ((songIndex - 1) % Numberdata.length) * width,
+      offset: ((songIndex - 1) % jobs.length) * width,
     });
     const { sound } = await Audio.Sound.createAsync({
-      uri: Numberdata[(songIndex - 1) % Numberdata.length].audio,
+      uri: jobs[(songIndex - 1) % jobs.length].audio,
     });
-
     setSound(sound);
     await sound.playAsync();
   };
@@ -87,7 +84,6 @@ export default function Numbers() {
         style={{
           alignItems: "center",
           width: width,
-
           transform: [
             {
               translateX: Animated.multiply(
@@ -98,9 +94,9 @@ export default function Numbers() {
           ],
         }}
       >
-        <Animated.Image
-          source={{ uri: item.image }}
-          style={{ width: 320, height: 320, borderRadius: 5 }}
+      <Animated.Image
+          source={{ uri: item.ImageUrl }}
+          style={{ width: 300, height: 300, borderRadius: 5 }}
         />
       </Animated.View>
     );
@@ -135,9 +131,9 @@ export default function Numbers() {
             pagingEnabled
             showsHorizontalScrollIndicator={false}
             scrollEventThrottle={16}
-            data={Numberdata}
+            data={jobs}
             renderItem={renderItem}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item.title}
             onScroll={Animated.event(
               [{ nativeEvent: { contentOffset: { x: scrollX } } }],
               { useNativeDriver: true }
@@ -145,8 +141,7 @@ export default function Numbers() {
           />
         </SafeAreaView>
         <View style={{ marginTop: -80 }}>
-          <Text style={styles.title}>{Numberdata[songIndex].title}</Text>
-          <Text style={styles.artist}>{Numberdata[songIndex].artist}</Text>
+          <Text style={styles.artist}>{jobs[songIndex].title}</Text>
         </View>
 
         <View style={styles.btns}>
@@ -185,18 +180,13 @@ export default function Numbers() {
 }
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 58,
-    textAlign: "center",
-    textTransform: "capitalize",
-    fontFamily: "feast",
-  },
+
   artist: {
-    fontSize: 21,
+    fontSize: 35,
     textAlign: "center",
     textTransform: "capitalize",
-    fontFamily: "feast",
-    color: "purple",
+    fontFamily: "mummified",
+    color: "red",
   },
   container: {
     height: height,

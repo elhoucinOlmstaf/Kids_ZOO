@@ -11,13 +11,13 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import Numberdata from "../../DataBase/DummyData/Numberdata";
+import FamilyData from "../../DataBase/DummyData/FamilyData";
 import { Audio } from "expo-av";
 import useFonts from "../../hooks/useFonts";
 import AppLoading from "expo-app-loading";
 
 const { width, height } = Dimensions.get("window");
-export default function Numbers() {
+export default function FamilyMember() {
   const scrollX = useRef(new Animated.Value(0)).current;
   const [sound, setSound] = React.useState();
   const [IsReady, SetIsReady] = useState(false);
@@ -50,7 +50,7 @@ export default function Numbers() {
 
   async function playSound() {
     const { sound } = await Audio.Sound.createAsync({
-      uri: Numberdata[songIndex].audio,
+      uri: FamilyData[songIndex].audio,
     });
     console.log(songIndex);
     setSound(sound);
@@ -59,24 +59,22 @@ export default function Numbers() {
 
   const goNext = async () => {
     slider.current.scrollToOffset({
-      offset: ((songIndex + 1) % Numberdata.length) * width,
+      offset: ((songIndex + 1) % FamilyData.length) * width,
     });
     const { sound } = await Audio.Sound.createAsync({
-      uri: Numberdata[(songIndex + 1) % Numberdata.length].audio,
+      uri: FamilyData[(songIndex + 1) % FamilyData.length].audio,
     });
-
     setSound(sound);
     await sound.playAsync();
   };
 
   const goPrv = async () => {
     slider.current.scrollToOffset({
-      offset: ((songIndex - 1) % Numberdata.length) * width,
+      offset: ((songIndex - 1) % FamilyData.length) * width,
     });
     const { sound } = await Audio.Sound.createAsync({
-      uri: Numberdata[(songIndex - 1) % Numberdata.length].audio,
+      uri: FamilyData[(songIndex - 1) % FamilyData.length].audio,
     });
-
     setSound(sound);
     await sound.playAsync();
   };
@@ -87,7 +85,6 @@ export default function Numbers() {
         style={{
           alignItems: "center",
           width: width,
-
           transform: [
             {
               translateX: Animated.multiply(
@@ -99,8 +96,8 @@ export default function Numbers() {
         }}
       >
         <Animated.Image
-          source={{ uri: item.image }}
-          style={{ width: 320, height: 320, borderRadius: 5 }}
+          source={{ uri: item.ImageUrl }}
+          style={{ width: 300, height: 320, borderRadius: 5 }}
         />
       </Animated.View>
     );
@@ -135,9 +132,9 @@ export default function Numbers() {
             pagingEnabled
             showsHorizontalScrollIndicator={false}
             scrollEventThrottle={16}
-            data={Numberdata}
+            data={FamilyData}
             renderItem={renderItem}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item.title}
             onScroll={Animated.event(
               [{ nativeEvent: { contentOffset: { x: scrollX } } }],
               { useNativeDriver: true }
@@ -145,8 +142,7 @@ export default function Numbers() {
           />
         </SafeAreaView>
         <View style={{ marginTop: -80 }}>
-          <Text style={styles.title}>{Numberdata[songIndex].title}</Text>
-          <Text style={styles.artist}>{Numberdata[songIndex].artist}</Text>
+          <Text style={styles.artist}>{FamilyData[songIndex].title}</Text>
         </View>
 
         <View style={styles.btns}>
@@ -185,18 +181,12 @@ export default function Numbers() {
 }
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 58,
-    textAlign: "center",
-    textTransform: "capitalize",
-    fontFamily: "feast",
-  },
   artist: {
-    fontSize: 21,
+    fontSize: 35,
     textAlign: "center",
     textTransform: "capitalize",
-    fontFamily: "feast",
-    color: "purple",
+    color: "red",
+    fontWeight: "bold",
   },
   container: {
     height: height,
