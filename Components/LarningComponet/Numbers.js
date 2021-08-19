@@ -25,7 +25,6 @@ export default function Numbers() {
   React.useEffect(() => {
     return sound
       ? () => {
-          console.log("Unloading Sound");
           sound.unloadAsync();
         }
       : undefined;
@@ -52,7 +51,7 @@ export default function Numbers() {
     const { sound } = await Audio.Sound.createAsync({
       uri: Numberdata[songIndex].audio,
     });
-    console.log(songIndex);
+
     setSound(sound);
     await sound.playAsync();
   }
@@ -150,17 +149,16 @@ export default function Numbers() {
         </View>
 
         <View style={styles.btns}>
-        <TouchableOpacity onPress={goPrv}>
-            {songIndex > 0 ? (
-              <Image
-                style={{ width: 100, height: 100 }}
-                source={{
-                  uri: "https://image.flaticon.com/icons/png/512/3925/3925153.png",
-                }}
-              />
-            ) : (
-              <Text></Text>
-            )}
+          <TouchableOpacity
+            onPress={goPrv}
+            disabled={songIndex === 0 ? true : false}
+          >
+            <Image
+              style={{ width: 100, height: 100 }}
+              source={{
+                uri: "https://image.flaticon.com/icons/png/512/3925/3925153.png",
+              }}
+            />
           </TouchableOpacity>
           <TouchableOpacity onPress={playSound}>
             <Image

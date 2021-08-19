@@ -53,7 +53,7 @@ export default function BodyParts() {
       uri: BodyData[songIndex].audio,
     });
     console.log(songIndex);
-    setSound(sound);
+   
     await sound.playAsync();
   }
 
@@ -95,7 +95,7 @@ export default function BodyParts() {
           ],
         }}
       >
-      <Animated.Image
+        <Animated.Image
           source={{ uri: item.ImageUrl }}
           style={{ width: 300, height: 300, borderRadius: 5 }}
         />
@@ -146,17 +146,16 @@ export default function BodyParts() {
         </View>
 
         <View style={styles.btns}>
-        <TouchableOpacity onPress={goPrv}>
-            {songIndex > 0 ? (
-              <Image
-                style={{ width: 100, height: 100 }}
-                source={{
-                  uri: "https://image.flaticon.com/icons/png/512/3925/3925153.png",
-                }}
-              />
-            ) : (
-              <Text></Text>
-            )}
+          <TouchableOpacity
+            onPress={goPrv}
+            disabled={songIndex === 0 ? true : false}
+          >
+            <Image
+              style={{ width: 100, height: 100 }}
+              source={{
+                uri: "https://image.flaticon.com/icons/png/512/3925/3925153.png",
+              }}
+            />
           </TouchableOpacity>
           <TouchableOpacity onPress={playSound}>
             <Image
@@ -181,7 +180,6 @@ export default function BodyParts() {
 }
 
 const styles = StyleSheet.create({
-
   artist: {
     fontSize: 35,
     textAlign: "center",

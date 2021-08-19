@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Dimensions,
-} from "react-native";
+import { View, Text, StyleSheet, Dimensions } from "react-native";
 import { Avatar } from "react-native-elements";
 import { Entypo } from "@expo/vector-icons";
 import firebase from "../DataBase/FireBase/Firebase";
 import { useNavigation } from "@react-navigation/native";
 import AppLoading from "expo-app-loading";
 import useFonts from "../hooks/useFonts";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const HomeProfileImage = () => {
   // get user data
@@ -43,6 +39,19 @@ const HomeProfileImage = () => {
     };
   }, []);
 
+  // sign out function
+  const signOut = () => {
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        AsyncStorage.removeItem("userData");
+      })
+      .then(() => {
+        navigation.navigate("Log_In");
+      })
+      .catch((error) => console.log(error));
+  };
   //load fonts
   const LoadFonts = async () => {
     await useFonts();
@@ -62,7 +71,7 @@ const HomeProfileImage = () => {
   return (
     <View>
       <View style={styles.subHeader}>
-        {isloadingComplet === false ? (
+        {userData.photoURL === null ? (
           <Avatar
             onPress={() => navigation.navigate("UserProfileScreen")}
             size="medium"
@@ -89,7 +98,7 @@ const HomeProfileImage = () => {
           name="menu"
           size={44}
           color="black"
-          onPress={() => navigation.toggleDrawer()}
+          onPress={signOut}
         />
       </View>
       <View style={styles.who}>

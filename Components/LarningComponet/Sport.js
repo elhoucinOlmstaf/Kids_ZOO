@@ -9,6 +9,7 @@ import {
   Animated,
   StyleSheet,
   TouchableOpacity,
+  FlatList,
 } from "react-native";
 
 import sportData from "../../DataBase/DummyData/sportData";
@@ -25,7 +26,6 @@ export default function Sport() {
   React.useEffect(() => {
     return sound
       ? () => {
-          console.log("Unloading Sound");
           sound.unloadAsync();
         }
       : undefined;
@@ -52,7 +52,7 @@ export default function Sport() {
     const { sound } = await Audio.Sound.createAsync({
       uri: sportData[songIndex].audio,
     });
-    console.log(songIndex);
+
     setSound(sound);
     await sound.playAsync();
   }
@@ -146,17 +146,17 @@ export default function Sport() {
         </View>
 
         <View style={styles.btns}>
-          <TouchableOpacity onPress={goPrv}>
-            {songIndex > 0 ? (
-              <Image
-                style={{ width: 100, height: 100 }}
-                source={{
-                  uri: "https://image.flaticon.com/icons/png/512/3925/3925153.png",
-                }}
-              />
-            ) : (
-              <Text></Text>
-            )}
+          <TouchableOpacity
+            onPress={goPrv}
+            disabled={songIndex === 0 ? true : false}
+          >
+            <Image
+              style={{ width: 100, height: 100 }}
+              source={{
+                uri: "https://image.flaticon.com/icons/png/512/3925/3925153.png",
+              }}
+            />
+            
           </TouchableOpacity>
           <TouchableOpacity onPress={playSound}>
             <Image

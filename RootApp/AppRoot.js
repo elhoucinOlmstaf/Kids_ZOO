@@ -14,15 +14,16 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 
 // screens
-import Log_In from "../Sceens/Log_In";
-import Sign_Up from "../Sceens/Sign_Up";
-import HomeScreen from "../Sceens/HomeScreen";
-import SplashScreen from "../Sceens/SplashScreen";
-import UserResetPassword from "../Sceens/userRestePassword";
-import UserProfileScreen from "../Sceens/UserProfileScreen";
-import EditeProfileScreen from "../Sceens/EditeProfileScreen";
-import learningPage from "../Sceens/learning/learningPage";
-import LearningPageShow from "../Sceens/learning/LearningPageShow";
+import Log_In from "../Screens/Log_In";
+import Sign_Up from "../Screens/Sign_Up";
+import HomeScreen from "../Screens/HomeScreen";
+import SplashScreen from "../Screens/SplashScreen";
+import UserResetPassword from "../Screens/userRestePassword";
+import UserProfileScreen from "../Screens/UserProfileScreen";
+import EditeProfileScreen from "../Screens/EditeProfileScreen";
+import learningPage from "../Screens/learning/learningPage";
+import LearningPageShow from "../Screens/learning/LearningPageShow";
+import ShowStories from "../Screens/stories/ShowStories";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -75,7 +76,7 @@ const StackApp = () => {
         options={({ route }) => ({
           title: route.params.Title,
           headerStyle: {
-            backgroundColor: "#ccc",
+            backgroundColor: "tomato",
           },
           headerTintColor: "#fff",
           headerTitleStyle: {
@@ -88,6 +89,13 @@ const StackApp = () => {
         component={LearningPageShow}
         options={({ route }) => ({
           title: route.params.Title,
+        })}
+      />
+      <Stack.Screen
+        name="ShowStories"
+        component={ShowStories}
+        options={({ route }) => ({
+          title: route.params.title,
         })}
       />
     </Stack.Navigator>

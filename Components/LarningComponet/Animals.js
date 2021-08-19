@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import AnimalsData from '../../DataBase/DummyData/AnimalesData'
+import AnimalsData from "../../DataBase/DummyData/AnimalesData";
 import { Audio } from "expo-av";
 import useFonts from "../../hooks/useFonts";
 import AppLoading from "expo-app-loading";
@@ -94,7 +94,7 @@ export default function Animals() {
           ],
         }}
       >
-      <Animated.Image
+        <Animated.Image
           source={{ uri: item.ImageUrl }}
           style={{ width: 300, height: 300, borderRadius: 5 }}
         />
@@ -145,17 +145,16 @@ export default function Animals() {
         </View>
 
         <View style={styles.btns}>
-        <TouchableOpacity onPress={goPrv}>
-            {songIndex > 0 ? (
-              <Image
-                style={{ width: 100, height: 100 }}
-                source={{
-                  uri: "https://image.flaticon.com/icons/png/512/3925/3925153.png",
-                }}
-              />
-            ) : (
-              <Text></Text>
-            )}
+          <TouchableOpacity
+            onPress={goPrv}
+            disabled={songIndex === 0 ? true : false}
+          >
+            <Image
+              style={{ width: 100, height: 100 }}
+              source={{
+                uri: "https://image.flaticon.com/icons/png/512/3925/3925153.png",
+              }}
+            />
           </TouchableOpacity>
           <TouchableOpacity onPress={playSound}>
             <Image
@@ -180,7 +179,6 @@ export default function Animals() {
 }
 
 const styles = StyleSheet.create({
-
   artist: {
     fontSize: 35,
     textAlign: "center",
