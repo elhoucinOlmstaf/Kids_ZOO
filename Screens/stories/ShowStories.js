@@ -1,49 +1,90 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import Story1 from "../../Components/StoriesComp/Story1";
-import Story2 from "../../Components/StoriesComp/Story2";
-import Story3 from "../../Components/StoriesComp/Story3";
-import Story4 from "../../Components/StoriesComp/Story4";
-import Story5 from "../../Components/StoriesComp/Story5";
-import Story6 from "../../Components/StoriesComp/Story6";
-import Story7 from "../../Components/StoriesComp/Story7";
-import Story8 from "../../Components/StoriesComp/Story8";
-import Story9 from "../../Components/StoriesComp/Story9";
-import Story10 from "../../Components/StoriesComp/Story10";
+import React, { useRef, useEffect, useState } from "react";
+import { Dimensions, Animated, View } from "react-native";
 
-const ShowStories = ({ route }) => {
-  const id = route.params.itemID;
-  console.log(id);
-  if (id === 1) {
-    return <Story1 />;
-  }
-  if (id === 2) {
-    return <Story2 />;
-  }
-  if (id === 3) {
-    return <Story3 />;
-  }
-  if (id === 4) {
-    return <Story4 />;
-  }
-  if (id === 5) {
-    return <Story5 />;
-  }
-  if (id === 6) {
-    return <Story6 />;
-  }
-  if (id === 7) {
-    return <Story7 />;
-  }
-  if (id === 8) {
-    return <Story8 />;
-  }
-  if (id === 9) {
-    return <Story9 />;
-  }
-  if (id === 10) {
-    return <Story10 />;
-  }
-};
+import firebase from "firebase";
+import Loading from "../../Components/Lottie/Loading";
 
-export default ShowStories;
+const { width, height } = Dimensions.get("window");
+export default function ShowStories({route}) {
+ const passeddata = route.params
+  const Story1 =passeddata.Story1
+  const Story2 =passeddata.Story2
+  const Story3 =passeddata.Story3
+  const Story4 =passeddata.Story4
+  const Story5 =passeddata.Story5
+  const Story6 =passeddata.Story6
+  const Story7 =passeddata.Story7
+  const Story8 =passeddata.Story8
+  const Story9 =passeddata.Story9
+  const Story10 =passeddata.Story10
+
+  const [StoriesData, setStoriesData] = useState(Story1)
+
+   const SETstoriesData = ()=>{
+     if(passeddata.itemID ===2){
+       setStoriesData(Story2)
+     }
+      if(passeddata.itemID ===3){
+       setStoriesData(Story3)
+     } if(passeddata.itemID ===4){
+       setStoriesData(Story4)
+     } if(passeddata.itemID ===5){
+       setStoriesData(Story5)
+     } if(passeddata.itemID ===6){
+       setStoriesData(Story6)
+     } if(passeddata.itemID ===7){
+       setStoriesData(Story7)
+     } if(passeddata.itemID ===8){
+       setStoriesData(Story8)
+     } if(passeddata.itemID ===9){
+       setStoriesData(Story9)
+     } if(passeddata.itemID ===10){
+       setStoriesData(Story10)
+     }
+   }
+
+   useEffect(() => {
+     SETstoriesData()
+     return () => {
+      SETstoriesData()
+     }
+   }, [])
+
+
+  const renderItem = ({ index, item }) => {
+    return (
+      <Animated.View
+        style={{
+          width: width,
+          height: height - height + 510,
+          backgroundColor: "#e9e5e5",
+          flex: 1,
+          alignItems: "center",
+        }}
+      >
+        <Animated.Image
+          source={{ uri: item }}
+          style={{
+            width: "95%",
+            height: "100%",
+            marginVertical: 10,
+            alignItems: "center",
+          }}
+        />
+      </Animated.View>
+    );
+  };
+
+  return (
+    <View>
+
+        <Animated.FlatList
+          showsHorizontalScrollIndicator={false}
+          data={StoriesData}
+          renderItem={renderItem}
+          keyExtractor={(item) => item}
+        />
+
+    </View>
+  );
+}

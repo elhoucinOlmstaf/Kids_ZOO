@@ -9,3 +9,32 @@ useEffect(() => {
 
 
 ---------------------------------------------------
+<View>
+            <TouchableOpacity
+              style={{
+                borderWidth: 3,
+                padding: 15,
+                width: width / 1.06,
+                borderRadius: 10,
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <Text style={{ fontSize: 17 }}>your scror is : {score}</Text>
+              <Text style={{ fontSize: 17 }}> {score}</Text>
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              backgroundColor: "blue",
+              padding: 15,
+              width: width / 1.06,
+              borderRadius: 10,
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
+            <TouchableOpacity>
+              <Text>Play Again</Text>
+            </TouchableOpacity>
+          </View>

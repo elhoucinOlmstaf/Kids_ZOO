@@ -7,7 +7,6 @@ import {
   TextInput,
   TouchableOpacity,
   Dimensions,
-  ActivityIndicator,
 } from "react-native";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -145,7 +144,7 @@ const Log_In = ({ navigation }) => {
               position: "absolute",
               Bottom: 10,
               opacity: 0.7,
-              backgroundColor: "black" 
+              backgroundColor: "black"
             }}
           >
             <SignAnimation />

@@ -11,7 +11,7 @@ import {
 import { Entypo } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
-import firebase from "firebase";
+import firebase from "../DataBase/FireBase/Firebase";
 const storage = firebase.storage();
 import AppLoading from "expo-app-loading";
 import useFonts from "../hooks/useFonts";

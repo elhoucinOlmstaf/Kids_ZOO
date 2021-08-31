@@ -9,27 +9,32 @@ import {
   Animated,
   StyleSheet,
   TouchableOpacity,
-  FlatList,
 } from "react-native";
 
-import sportData from "../../DataBase/DummyData/sportData";
 import { Audio } from "expo-av";
 import useFonts from "../../hooks/useFonts";
 import AppLoading from "expo-app-loading";
 
 const { width, height } = Dimensions.get("window");
-export default function Sport() {
+export default function JokesCategory({route}) {
+
   const scrollX = useRef(new Animated.Value(0)).current;
   const [sound, setSound] = React.useState();
   const [IsReady, SetIsReady] = useState(false);
+ const [Jokes, setJokes] = useState("")
+  const fetchingJOKESData = () => {
+    fetch(
+      "https://elhoucinolmstaf.github.io/KIDS_ZOO_API/Data/HalariousJoks.json"
+    )
+      .then((response) => response.json())
+      .then((json) => {
+        setJokes(json);
+      })
+      .catch((error) => console.error(error));
+  };
+  console.log(Jokes)
 
-  React.useEffect(() => {
-    return sound
-      ? () => {
-          sound.unloadAsync();
-        }
-      : undefined;
-  }, [sound]);
+
 
   const slider = useRef(null);
   const [songIndex, setSongIndex] = useState(0);
@@ -38,6 +43,7 @@ export default function Sport() {
   const position = useRef(Animated.divide(scrollX, width)).current;
 
   useEffect(() => {
+      fetchingJOKESData()
     scrollX.addListener(({ value }) => {
       const val = Math.round(value / width);
       setSongIndex(val);
@@ -49,41 +55,30 @@ export default function Sport() {
   }, []);
 
   async function playSound() {
-    const { sound } = await Audio.Sound.createAsync({
-      uri: sportData[songIndex].audio,
-    });
 
-    setSound(sound);
-    await sound.playAsync();
+
   }
 
   const goNext = async () => {
     slider.current.scrollToOffset({
-      offset: ((songIndex + 1) % sportData.length) * width,
+      offset: ((songIndex + 1) % Jokes.HalariousJoksj.length) * width,
     });
-    const { sound } = await Audio.Sound.createAsync({
-      uri: sportData[(songIndex + 1) % sportData.length].audio,
-    });
-    setSound(sound);
-    await sound.playAsync();
+
   };
 
   const goPrv = async () => {
     slider.current.scrollToOffset({
-      offset: ((songIndex - 1) % sportData.length) * width,
+      offset: ((songIndex - 1) % Jokes.HalariousJoksj.length) * width,
     });
-    const { sound } = await Audio.Sound.createAsync({
-      uri: sportData[(songIndex - 1) % sportData.length].audio,
-    });
-    setSound(sound);
-    await sound.playAsync();
+
+
   };
 
   const renderItem = ({ index, item }) => {
     return (
       <Animated.View
         style={{
-          alignItems: "center",
+         height:385,
           width: width,
           transform: [
             {
@@ -96,8 +91,8 @@ export default function Sport() {
         }}
       >
         <Animated.Image
-          source={{ uri: item.ImageUrl }}
-          style={{ width: 300, height: 300, borderRadius: 5 }}
+          source={{ uri: item.ImagesURL }}
+          style={{ width: width /1.01, height: "100%", borderRadius: 5 }}
         />
       </Animated.View>
     );
@@ -119,11 +114,7 @@ export default function Sport() {
   }
   const BgImage = require("../../Images/GreenWallpaper.png");
   return (
-    <ImageBackground
-      source={BgImage}
-      resizeMode="cover"
-      style={styles.backgroundImage}
-    >
+
       <SafeAreaView style={styles.container}>
         <SafeAreaView style={{ height: 320 }}>
           <Animated.FlatList
@@ -132,19 +123,15 @@ export default function Sport() {
             pagingEnabled
             showsHorizontalScrollIndicator={false}
             scrollEventThrottle={16}
-            data={sportData}
+            data={Jokes.HalariousJoksj}
             renderItem={renderItem}
-            keyExtractor={(item) => item.title}
+            keyExtractor={(item , index) =>item.ImagesURL}
             onScroll={Animated.event(
               [{ nativeEvent: { contentOffset: { x: scrollX } } }],
               { useNativeDriver: true }
             )}
           />
         </SafeAreaView>
-        <View style={{ marginTop: -80 }}>
-          <Text style={styles.artist}>{sportData[songIndex].title}</Text>
-        </View>
-
         <View style={styles.btns}>
           <TouchableOpacity
             onPress={goPrv}
@@ -154,15 +141,6 @@ export default function Sport() {
               style={{ width: 100, height: 100 }}
               source={{
                 uri: "https://image.flaticon.com/icons/png/512/3925/3925153.png",
-              }}
-            />
-            
-          </TouchableOpacity>
-          <TouchableOpacity onPress={playSound}>
-            <Image
-              style={{ width: 100, height: 100 }}
-              source={{
-                uri: "https://image.flaticon.com/icons/png/512/718/718965.png",
               }}
             />
           </TouchableOpacity>
@@ -176,29 +154,18 @@ export default function Sport() {
           </TouchableOpacity>
         </View>
       </SafeAreaView>
-    </ImageBackground>
+
   );
 }
 
 const styles = StyleSheet.create({
-  artist: {
-    fontSize: 35,
-    textAlign: "center",
-    textTransform: "capitalize",
-    fontFamily: "mummified",
-    color: "red",
-  },
+
   container: {
     height: height,
-    justifyContent: "space-evenly",
+  justifyContent:"space-evenly" ,
+  backgroundColor:"#ddd"
   },
-  backgroundImage: {
-    width: width,
-    height: height,
-    position: "absolute",
-    top: 0,
-    left: 0,
-  },
+
   btns: {
     flexDirection: "row",
     justifyContent: "space-around",

@@ -6,13 +6,28 @@ import {
   Animated,
   StyleSheet,
   TouchableNativeFeedback,
-  View
+  View,
 } from "react-native";
+import Loading from "../../Components/Lottie/Loading";
 
+import firebase from "firebase";
 import { useNavigation } from "@react-navigation/native";
 
 const Stories = () => {
   const navigation = useNavigation();
+ const storage = firebase.storage();
+ const [Story1, setStory1] = useState("");
+ const [Story2, setStory2] = useState("");
+ const [Story3, setStory3] = useState("");
+ const [Story4, setStory4] = useState("");
+ const [Story5, setStory5] = useState("");
+ const [Story6, setStory6] = useState("");
+ const [Story7, setStory7] = useState("");
+ const [Story8, setStory8] = useState("");
+ const [Story9, setStory9] = useState("");
+ const [Story10, setStory10] = useState("");
+ const [IsloadingComplet, setIsloadingComplet] = useState(false);
+
   const StoriesCategory = [
     {
       ImageUrl:
@@ -76,13 +91,116 @@ const Stories = () => {
     },
   ];
 
+  //getting  story1 data
+  const STORY1 = async () => {
+    const imageRefs = await storage.ref("Images/story1").listAll();
+    const urls = await Promise.all(
+      imageRefs.items.map((ref) => ref.getDownloadURL())
+    );
+    setStory1(urls);
+    setIsloadingComplet(true);
+  };
+  //getting  story2 data
+  const STORY2 = async () => {
+    const imageRefs = await storage.ref("Images/story2").listAll();
+    const urls = await Promise.all(
+      imageRefs.items.map((ref) => ref.getDownloadURL())
+    );
+    setStory2(urls);
+    setIsloadingComplet(true);
+  };
+  //getting  story3 data
+  const STORY3 = async () => {
+    const imageRefs = await storage.ref("Images/story3").listAll();
+    const urls = await Promise.all(
+      imageRefs.items.map((ref) => ref.getDownloadURL())
+    );
+    setStory3(urls);
+    setIsloadingComplet(true);
+  };
+  //getting  story4 data
+  const STORY4 = async () => {
+    const imageRefs = await storage.ref("Images/story4").listAll();
+    const urls = await Promise.all(
+      imageRefs.items.map((ref) => ref.getDownloadURL())
+    );
+    setStory4(urls);
+    setIsloadingComplet(true);
+  };
+  //getting  story5 data
+  const STORY5 = async () => {
+    const imageRefs = await storage.ref("Images/story5").listAll();
+    const urls = await Promise.all(
+      imageRefs.items.map((ref) => ref.getDownloadURL())
+    );
+    setStory5(urls);
+    setIsloadingComplet(true);
+  };
+  //getting  story6 data
+  const STORY6 = async () => {
+    const imageRefs = await storage.ref("Images/story6").listAll();
+    const urls = await Promise.all(
+      imageRefs.items.map((ref) => ref.getDownloadURL())
+    );
+    setStory6(urls);
+    setIsloadingComplet(true);
+  };
+  //getting  story7 data
+  const STORY7 = async () => {
+    const imageRefs = await storage.ref("Images/story7").listAll();
+    const urls = await Promise.all(
+      imageRefs.items.map((ref) => ref.getDownloadURL())
+    );
+    setStory7(urls);
+    setIsloadingComplet(true);
+  };
+  //getting  story8 data
+  const STORY8 = async () => {
+    const imageRefs = await storage.ref("Images/story8").listAll();
+    const urls = await Promise.all(
+      imageRefs.items.map((ref) => ref.getDownloadURL())
+    );
+    setStory8(urls);
+    setIsloadingComplet(true);
+  };
+  //getting  story 9data
+  const STORY9 = async () => {
+    const imageRefs = await storage.ref("Images/story9").listAll();
+    const urls = await Promise.all(
+      imageRefs.items.map((ref) => ref.getDownloadURL())
+    );
+    setStory9(urls);
+    setIsloadingComplet(true);
+  };
+  //getting  story10 data
+  const STORY10 = async () => {
+    const imageRefs = await storage.ref("Images/story10").listAll();
+    const urls = await Promise.all(
+      imageRefs.items.map((ref) => ref.getDownloadURL())
+    );
+    setStory10(urls);
+    setIsloadingComplet(true);
+  };
+  useEffect(() => {
+    STORY1();
+    STORY2()
+    STORY3()
+    STORY4()
+    STORY5()
+    STORY6()
+    STORY7()
+    STORY8()
+    STORY9()
+    STORY10()
+  }, []);
+
   const NavigateTo = (item) => {
-    navigation.navigate("ShowStories", { itemID: item.id, title: item.title });
+    navigation.push("ShowStories", { itemID: item.id, title: item.title , Story1 , Story2 ,Story3 ,Story4 ,Story5 ,Story6 ,Story7 , Story8 ,Story9 ,Story10 });
   };
 
   return (
     <SafeAreaView>
-      <Animated.FlatList
+    {IsloadingComplet ?    <Animated.FlatList
         style={styles.list}
         contentContainerStyle={styles.listContainer}
         data={StoriesCategory}
@@ -103,7 +221,8 @@ const Stories = () => {
             </View>
           );
         }}
-      />
+      />: < Loading /> }
+
     </SafeAreaView>
   );
 };
@@ -112,17 +231,18 @@ const windowHeight = Dimensions.get("window").height;
 const styles = StyleSheet.create({
   listContainer: {
     alignItems: "center",
-    paddingBottom: 10,
+    paddingBottom: 25,
   },
   card: {
     marginVertical: 10,
     flexBasis: windowWidth / 2.3,
-    minHeight: windowHeight - windowHeight / 1.50,
+    minHeight: windowHeight - windowHeight / 1.5,
     marginHorizontal: 10,
     borderRadius: 30,
+    backgroundColor: "tomato",
   },
   cardImage: {
-    height: windowHeight - windowHeight / 1.50,
+    height: windowHeight - windowHeight / 1.5,
     width: "100%",
     alignSelf: "center",
     borderRadius: 30,

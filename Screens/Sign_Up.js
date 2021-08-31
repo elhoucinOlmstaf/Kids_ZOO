@@ -11,7 +11,7 @@ import {
 import { Entypo } from "@expo/vector-icons";
 import SignAnimation from "../Components/Lottie/SignAnimation";
 import firebase from "../DataBase/FireBase/Firebase";
-const windowHeight = Dimensions.get("window").height;
+
 const Sign_Up = ({ navigation }) => {
   const [FullName, setFullName] = useState("");
   const [Email, setEmail] = useState("");
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
   },
   textCon: {
     alignItems: "center",
-    marginTop: windowHeight - windowHeight + 50,
+    marginTop: height - height + 50,
   },
   text: {
     color: "red",
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
   },
   inputs: {
     alignItems: "center",
-    marginTop: windowHeight - windowHeight + 20,
+    marginTop: height - height + 20,
   },
   textInput: {
     flex: 1,

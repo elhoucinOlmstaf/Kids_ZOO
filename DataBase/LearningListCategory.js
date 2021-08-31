@@ -1,4 +1,4 @@
-import Category from "../DummyData/Constructor";
+import Category from "./Constructor";
 
 export const CATEGORIES = [
   new Category(

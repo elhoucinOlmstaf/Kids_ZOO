@@ -9,15 +9,118 @@ import {
   Dimensions,
   Animated,
 } from "react-native";
-import { CATEGORIES } from "../DataBase/DummyData/LearningListCategory";
-import useFonts from "../hooks/useFonts";
+import { CATEGORIES } from "../../DataBase/LearningListCategory";
+import useFonts from "../../hooks/useFonts";
 import AppLoading from "expo-app-loading";
 import { useNavigation } from "@react-navigation/native";
 
-const LearningComponent = () => {
-  const [IsReady, SetIsReady] = useState(false);
+const LearningScreenCategories = () => {
   const navigation = useNavigation();
+  const [IsReady, SetIsReady] = useState(false);
+  const [SportData , setSportData] = useState("")
+  const [NumbersData , setNumbersData] = useState("")
+  const [AlphabetData , setSAlphabetData] = useState("")
+  const [FamilytData , setFamilytData] = useState("")
+  const [BodyPartData , setBodyPartData] = useState("")
+  const [JobsData , setJobsData] = useState("")
+  const [FoodData , setFoodData] = useState("")
+  const [AnimalesData , setAnimalesData] = useState("")
+  console.log(NumbersData)
+  //fetchingNumbersData
+  const fetchingSportData = () => {
+    fetch(
+      "https://elhoucinolmstaf.github.io/KIDS_ZOO_API/Data/SportData.json"
+    )
+      .then((response) => response.json())
+      .then((json) => {
+       setSportData(json);
+      })
+      .catch((error) => console.error(error));
+  };
+  const fetchingNumbersData = () => {
+    fetch(
+      "https://elhoucinolmstaf.github.io/KIDS_ZOO_API/Data/NumbersData.json"
+    )
+      .then((response) => response.json())
+      .then((json) => {
+      setNumbersData(json);
+      })
+      .catch((error) => console.error(error));
+  };
+  const fetchingAlphabetData = () => {
+    fetch(
+      "https://elhoucinolmstaf.github.io/KIDS_ZOO_API/Data/AlphabetData.json"
+    )
+      .then((response) => response.json())
+      .then((json) => {
+      setSAlphabetData(json);
+      })
+      .catch((error) => console.error(error));
+  };
+  const fetchingFamilytData = () => {
+    fetch(
+      "https://elhoucinolmstaf.github.io/KIDS_ZOO_API/Data/Family.json"
+    )
+      .then((response) => response.json())
+      .then((json) => {
+      setFamilytData(json);
+      })
+      .catch((error) => console.error(error));
+  };
+  const fetchingBodyPartData = () => {
+    fetch(
+      "https://elhoucinolmstaf.github.io/KIDS_ZOO_API/Data/BodySportData.json"
+    )
+      .then((response) => response.json())
+      .then((json) => {
+      setBodyPartData(json);
+      })
+      .catch((error) => console.error(error));
+  };
+  const fetchingJobsData = () => {
+    fetch(
+      "https://elhoucinolmstaf.github.io/KIDS_ZOO_API/Data/Jobs.json"
+    )
+      .then((response) => response.json())
+      .then((json) => {
+      setJobsData(json);
+      })
+      .catch((error) => console.error(error));
+  };
+   const fetchingFoodData = () => {
+    fetch(
+      "https://elhoucinolmstaf.github.io/KIDS_ZOO_API/Data/Food.json"
+    )
+      .then((response) => response.json())
+      .then((json) => {
+      setFoodData(json);
+      })
+      .catch((error) => console.error(error));
+  };
+  const fetchingAnimalesData = () => {
+    fetch(
+      "https://elhoucinolmstaf.github.io/KIDS_ZOO_API/Data/Animales.json"
+    )
+      .then((response) => response.json())
+      .then((json) => {
+      setAnimalesData(json);
+      })
+      .catch((error) => console.error(error));
+  };
 
+useEffect(() => {
+  fetchingSportData()
+  fetchingNumbersData()
+  fetchingAlphabetData()
+  fetchingFamilytData ()
+  fetchingBodyPartData()
+  fetchingJobsData()
+  fetchingFoodData()
+  fetchingAnimalesData()
+  return () => {
+  console.log("cleared")
+  }
+}, [])
   //load fonts
   const LoadFonts = async () => {
     await useFonts();
@@ -52,9 +155,6 @@ const LearningComponent = () => {
       </Animated.View>
     );
   };
-
-  
-
   return (
     <View style={styles.container}>
       <FlatList
@@ -78,6 +178,7 @@ const LearningComponent = () => {
                 navigation.navigate("LearningPageShow", {
                   itemId: item.id,
                   Title: item.title,
+                  SportData ,NumbersData , AlphabetData ,FamilytData , BodyPartData ,JobsData ,FoodData ,AnimalesData
                 })
               }
             >
@@ -112,7 +213,7 @@ const LearningComponent = () => {
   );
 };
 
-export default LearningComponent;
+export default LearningScreenCategories;
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 

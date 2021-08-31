@@ -21,10 +21,13 @@ import SplashScreen from "../Screens/SplashScreen";
 import UserResetPassword from "../Screens/userRestePassword";
 import UserProfileScreen from "../Screens/UserProfileScreen";
 import EditeProfileScreen from "../Screens/EditeProfileScreen";
-import learningPage from "../Screens/learning/learningPage";
+import LearningScreenCategories from "../Screens/learning/LearningScreenCategories";
 import LearningPageShow from "../Screens/learning/LearningPageShow";
 import ShowStories from "../Screens/stories/ShowStories";
-
+import QuizeHome from "../Screens/Quize/QuizeHome";
+import QuizeShowPage from "../Screens/Quize/QuizeShowPage";
+import HomeShowCategories from "../Screens/HomeShowCategories"
+import JokesCategory from "../Screens/Jokes/JokesCategory"
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -60,6 +63,7 @@ const StackApp = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen name="UserResetPassword" component={UserResetPassword} />
+      <Stack.Screen name="JokesCategory" component={JokesCategory} />
       <Stack.Screen
         name="UserProfileScreen"
         component={UserProfileScreen}
@@ -71,8 +75,8 @@ const StackApp = () => {
         options={{ title: "Create New Profile" }}
       />
       <Stack.Screen
-        name="learningPage"
-        component={learningPage}
+        name="HomeShowCategories"
+        component={HomeShowCategories}
         options={({ route }) => ({
           title: route.params.Title,
           headerStyle: {
@@ -96,6 +100,20 @@ const StackApp = () => {
         component={ShowStories}
         options={({ route }) => ({
           title: route.params.title,
+        })}
+      />
+      <Stack.Screen
+        name="QuizeHome"
+        component={QuizeHome}
+        options={() => ({
+          title: "Quizes",
+        })}
+      />
+      <Stack.Screen
+        name="QuizeShowPage"
+        component={QuizeShowPage}
+        options={({ route }) => ({
+          title: route.params.item.name,
         })}
       />
     </Stack.Navigator>

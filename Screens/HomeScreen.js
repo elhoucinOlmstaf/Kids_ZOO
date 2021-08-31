@@ -20,7 +20,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const HomeScreen = ({ navigation, route }) => {
   const MoveTo = (item) => {
-    navigation.navigate("learningPage", { itemId: item.id, Title: item.title });
+    navigation.navigate("HomeShowCategories", { itemId: item.id, Title: item.title });
   };
 
   const DataList = [
@@ -30,60 +30,53 @@ const HomeScreen = ({ navigation, route }) => {
       image: "https://i.postimg.cc/05Lhs0ZH/knowledge.png",
     },
     {
-      id: 6,
+      id: 2,
       title: "Stories",
       image: "https://i.postimg.cc/0NWHHYbn/fairytale.png",
     },
     {
-      id: 2,
+      id: 3,
       title: "Quizes",
       image: "https://i.postimg.cc/rpyMmg9M/what.png",
     },
     {
-      id: 3,
-      title: "Words List",
+      id: 4,
+      title: "Jokes",
       image: "https://i.postimg.cc/htf0BRkB/dictionary.png",
     },
     {
-      id: 4,
+      id: 5,
       title: "Facts",
       image: "https://image.flaticon.com/icons/png/512/5167/5167414.png",
     },
     {
-      id: 5,
+      id: 6,
       title: "Setting",
       image: "https://image.flaticon.com/icons/png/512/439/439291.png",
     },
   ];
   const [userData, setUserData] = useState("");
-  const [isloadingComplet, setisloadingComplet] = useState(false);
   const [IsReady, SetIsReady] = useState(false);
 
   const isFocused = useIsFocused();
-  console.log(isFocused);
   useEffect(() => {
     let isActive = true;
-    const abortCtrl = new AbortController();
-    const opts = { signal: abortCtrl.signal };
-
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         return firebase
           .firestore()
-          .collection("users", opts)
+          .collection("users")
           .doc(user.uid)
           .get()
           .then((documentSnapshot) => {
             if (isActive) {
               setUserData(documentSnapshot.data());
-              setisloadingComplet(true);
             }
           });
       }
     });
     return () => {
-      abortCtrl.abort();
-      console.log("cleared hhh");
+      isActive = false;
     };
   }, [isFocused]);
 
@@ -164,7 +157,7 @@ const HomeScreen = ({ navigation, route }) => {
             >
               Hello
             </Text>
-            {isloadingComplet ? (
+            {userData.displayName !== null ? (
               <Text
                 style={{
                   fontFamily: "MontserratBold",

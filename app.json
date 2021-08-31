@@ -23,7 +23,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#C2185B"
-      }
+      },
+      "package": "com.hosssin"
     },
     "web": {
       "favicon": "./assets/favicon.png"
