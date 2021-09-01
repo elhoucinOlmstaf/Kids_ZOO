@@ -1,8 +1,8 @@
-import React, { useRef, useEffect, useState } from "react";
-import { Dimensions, Animated, View } from "react-native";
+import { Animated, Dimensions, View } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
 
-import firebase from "firebase";
 import Loading from "../../Components/Lottie/Loading";
+import firebase from "firebase";
 
 const { width, height } = Dimensions.get("window");
 export default function ShowStories({route}) {
@@ -48,7 +48,7 @@ export default function ShowStories({route}) {
      return () => {
       SETstoriesData()
      }
-   }, [])
+   }, [isFocused])
 
 
   const renderItem = ({ index, item }) => {

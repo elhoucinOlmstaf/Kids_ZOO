@@ -1,32 +1,35 @@
-import React, { useRef, useEffect, useState } from "react";
 import {
-  SafeAreaView,
-  Image,
-  Dimensions,
   Animated,
+  Dimensions,
+  Image,
+  SafeAreaView,
   StyleSheet,
   TouchableNativeFeedback,
   View,
 } from "react-native";
-import Loading from "../../Components/Lottie/Loading";
+import React, { useEffect, useRef, useState } from "react";
 
+import Loading from "../../Components/Lottie/Loading";
 import firebase from "firebase";
+import { useIsFocused } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 
 const Stories = () => {
   const navigation = useNavigation();
- const storage = firebase.storage();
- const [Story1, setStory1] = useState("");
- const [Story2, setStory2] = useState("");
- const [Story3, setStory3] = useState("");
- const [Story4, setStory4] = useState("");
- const [Story5, setStory5] = useState("");
- const [Story6, setStory6] = useState("");
- const [Story7, setStory7] = useState("");
- const [Story8, setStory8] = useState("");
- const [Story9, setStory9] = useState("");
- const [Story10, setStory10] = useState("");
- const [IsloadingComplet, setIsloadingComplet] = useState(false);
+  const isFocused = useIsFocused();
+
+  const storage = firebase.storage();
+  const [Story1, setStory1] = useState("");
+  const [Story2, setStory2] = useState("");
+  const [Story3, setStory3] = useState("");
+  const [Story4, setStory4] = useState("");
+  const [Story5, setStory5] = useState("");
+  const [Story6, setStory6] = useState("");
+  const [Story7, setStory7] = useState("");
+  const [Story8, setStory8] = useState("");
+  const [Story9, setStory9] = useState("");
+  const [Story10, setStory10] = useState("");
+  const [IsloadingComplet, setIsloadingComplet] = useState(false);
 
   const StoriesCategory = [
     {
@@ -183,46 +186,62 @@ const Stories = () => {
   };
   useEffect(() => {
     STORY1();
-    STORY2()
-    STORY3()
-    STORY4()
-    STORY5()
-    STORY6()
-    STORY7()
-    STORY8()
-    STORY9()
-    STORY10()
+    STORY2();
+    STORY3();
+    STORY4();
+    STORY5();
+    STORY6();
+    STORY7();
+    STORY8();
+    STORY9();
+    STORY10();
   }, []);
 
   const NavigateTo = (item) => {
-    navigation.push("ShowStories", { itemID: item.id, title: item.title , Story1 , Story2 ,Story3 ,Story4 ,Story5 ,Story6 ,Story7 , Story8 ,Story9 ,Story10 });
+    navigation.push("ShowStories", {
+      itemID: item.id,
+      title: item.title,
+      Story1,
+      Story2,
+      Story3,
+      Story4,
+      Story5,
+      Story6,
+      Story7,
+      Story8,
+      Story9,
+      Story10,
+    });
   };
 
   return (
     <SafeAreaView>
-    {IsloadingComplet ?    <Animated.FlatList
-        style={styles.list}
-        contentContainerStyle={styles.listContainer}
-        data={StoriesCategory}
-        horizontal={false}
-        numColumns={2}
-        keyExtractor={(item) => {
-          return item.id;
-        }}
-        renderItem={({ item }) => {
-          return (
-            <View style={styles.card}>
-              <TouchableNativeFeedback onPress={() => NavigateTo(item)}>
-                <Image
-                  style={styles.cardImage}
-                  source={{ uri: item.ImageUrl }}
-                />
-              </TouchableNativeFeedback>
-            </View>
-          );
-        }}
-      />: < Loading /> }
-
+      {IsloadingComplet ? (
+        <Animated.FlatList
+          style={styles.list}
+          contentContainerStyle={styles.listContainer}
+          data={StoriesCategory}
+          horizontal={false}
+          numColumns={2}
+          keyExtractor={(item) => {
+            return item.id;
+          }}
+          renderItem={({ item }) => {
+            return (
+              <View style={styles.card}>
+                <TouchableNativeFeedback onPress={() => NavigateTo(item)}>
+                  <Image
+                    style={styles.cardImage}
+                    source={{ uri: item.ImageUrl }}
+                  />
+                </TouchableNativeFeedback>
+              </View>
+            );
+          }}
+        />
+      ) : (
+        <Loading />
+      )}
     </SafeAreaView>
   );
 };

@@ -1,26 +1,30 @@
-import React, { useState, useEffect } from "react";
 import {
+  Dimensions,
+  FlatList,
+  Image,
   StyleSheet,
   Text,
-  View,
-  Image,
-  FlatList,
   TouchableOpacity,
-  Dimensions,
+  View,
 } from "react-native";
-import { useIsFocused } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
 
+import AppLoading from "expo-app-loading";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Avatar } from "react-native-elements";
 import { Entypo } from "@expo/vector-icons";
 import firebase from "../DataBase/FireBase/Firebase";
-import AppLoading from "expo-app-loading";
 import useFonts from "../hooks/useFonts";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useIsFocused } from "@react-navigation/native";
+
 // screen
 
 const HomeScreen = ({ navigation, route }) => {
   const MoveTo = (item) => {
-    navigation.navigate("HomeShowCategories", { itemId: item.id, Title: item.title });
+    navigation.navigate("HomeShowCategories", {
+      itemId: item.id,
+      Title: item.title,
+    });
   };
 
   const DataList = [
@@ -42,7 +46,7 @@ const HomeScreen = ({ navigation, route }) => {
     {
       id: 4,
       title: "Jokes",
-      image: "https://i.postimg.cc/htf0BRkB/dictionary.png",
+      image: "https://image.flaticon.com/icons/png/512/3839/3839479.png",
     },
     {
       id: 5,
@@ -133,7 +137,7 @@ const HomeScreen = ({ navigation, route }) => {
                 }
                 size="medium"
                 rounded
-                containerStyle={{ marginTop: 5}}
+                containerStyle={{ marginTop: 5 }}
                 source={{
                   uri: userData.photoURL,
                 }}

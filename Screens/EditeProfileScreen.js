@@ -1,21 +1,23 @@
-import React, { useState, useEffect } from "react";
+import * as ImagePicker from "expo-image-picker";
+
 import {
+  Dimensions,
+  Image,
   StyleSheet,
   Text,
-  View,
-  Image,
   TextInput,
   TouchableOpacity,
-  Dimensions,
+  View,
 } from "react-native";
+import React, { useEffect, useState } from "react";
+
 import { Entypo } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-import * as ImagePicker from "expo-image-picker";
-import firebase from "../DataBase/FireBase/Firebase";
-const storage = firebase.storage();
-import AppLoading from "expo-app-loading";
-import useFonts from "../hooks/useFonts";
 import Uploadinganimation from "../Components/Lottie/Uploadinganimation";
+import firebase from "../DataBase/FireBase/Firebase";
+import { useNavigation } from "@react-navigation/native";
+
+const storage = firebase.storage();
+
 const { width, height } = Dimensions.get("window");
 const EditeProfileScreen = () => {
   const navigation = useNavigation();
@@ -24,7 +26,6 @@ const EditeProfileScreen = () => {
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [Update, setUpdate] = useState(false);
-  const [IsReady, SetIsReady] = useState(false);
 
   const getPermission = async () => {
     if (Platform.OS !== "web") {
@@ -37,7 +38,6 @@ const EditeProfileScreen = () => {
   };
 
   const pickImage = async () => {
-    getPermission();
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -64,7 +64,7 @@ const EditeProfileScreen = () => {
       xhr.send(null);
     });
   };
-
+  getPermission();
   // here I am uploading the image to firebase storage
   const uploadImageToBucket = async () => {
     let blob;
@@ -103,7 +103,7 @@ const EditeProfileScreen = () => {
         description: Description,
         age: Age,
       })
-      .then(() => navigation.push("HomeScreen",))
+      .then(() => navigation.push("HomeScreen"))
       .catch((err) => {
         alert(err, "Please Select a Photo First");
         setUploading(false);
@@ -111,18 +111,6 @@ const EditeProfileScreen = () => {
       });
   };
 
-  const LoadFonts = async () => {
-    await useFonts();
-  };
-  if (!IsReady) {
-    return (
-      <AppLoading
-        startAsync={LoadFonts}
-        onFinish={() => SetIsReady(true)}
-        onError={() => {}}
-      />
-    );
-  }
 
   return (
     <View style={styles.container}>

@@ -1,33 +1,27 @@
-import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  ImageBackground,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import { Ionicons } from "@expo/vector-icons";
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-
-// screens
-import Log_In from "../Screens/Log_In";
-import Sign_Up from "../Screens/Sign_Up";
-import HomeScreen from "../Screens/HomeScreen";
-import SplashScreen from "../Screens/SplashScreen";
-import UserResetPassword from "../Screens/userRestePassword";
-import UserProfileScreen from "../Screens/UserProfileScreen";
+import AboutMe from "../Screens/Setting/AboutMe"
 import EditeProfileScreen from "../Screens/EditeProfileScreen";
-import LearningScreenCategories from "../Screens/learning/LearningScreenCategories";
+import Facts from "../Screens/Facts/Facts"
+import HomeScreen from "../Screens/HomeScreen";
+import HomeShowCategories from "../Screens/HomeShowCategories";
+import JokesCategory from "../Screens/Jokes/JokesCategory";
 import LearningPageShow from "../Screens/learning/LearningPageShow";
-import ShowStories from "../Screens/stories/ShowStories";
+import Log_In from "../Screens/Log_In";
+import { NavigationContainer } from "@react-navigation/native";
 import QuizeHome from "../Screens/Quize/QuizeHome";
 import QuizeShowPage from "../Screens/Quize/QuizeShowPage";
-import HomeShowCategories from "../Screens/HomeShowCategories"
-import JokesCategory from "../Screens/Jokes/JokesCategory"
+import React from "react";
+import Setting from "../Screens/Setting/Setting"
+import ShowStories from "../Screens/stories/ShowStories";
+import Sign_Up from "../Screens/Sign_Up";
+import SplashScreen from "../Screens/SplashScreen";
+import UserProfileScreen from "../Screens/UserProfileScreen";
+import UserResetPassword from "../Screens/userRestePassword";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
+
+// screens
+
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -64,6 +58,8 @@ const StackApp = () => {
       />
       <Stack.Screen name="UserResetPassword" component={UserResetPassword} />
       <Stack.Screen name="JokesCategory" component={JokesCategory} />
+      <Stack.Screen name="Facts" component={Facts} />
+      <Stack.Screen name="AboutMe" component={AboutMe} />
       <Stack.Screen
         name="UserProfileScreen"
         component={UserProfileScreen}

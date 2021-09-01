@@ -1,11 +1,11 @@
-import React from "react";
-import { Text, View } from "react-native";
-
-// importing Screensk
-import LearningScreenCategories from "./learning/LearningScreenCategories"
-import Stories from "./stories/StoriesCategory";
+import Facts from "./Facts/Facts";
+import JokesCategory from "./Jokes/JokesCategory";
+import LearningScreenCategories from "./learning/LearningScreenCategories";
 import QuizeHome from "./Quize/QuizeHome";
-import JokesCategory from "./Jokes/JokesCategory"
+import React from "react";
+import Setting from "./Setting/Setting";
+import Stories from "./stories/StoriesCategory";
+
 const HomeShowCategories = ({ route }) => {
   const { itemId } = route.params;
 
@@ -14,26 +14,19 @@ const HomeShowCategories = ({ route }) => {
   }
 
   if (itemId === 2) {
-    return (
-      <View>
-        <Stories />
-      </View>
-    );
+    return <Stories />;
   }
   if (itemId === 3) {
     return <QuizeHome />;
   }
   if (itemId === 4) {
-    return (
-      <JokesCategory />
-    );
+    return <JokesCategory />;
   }
   if (itemId === 5) {
-    return (
-      <View>
-        <Text>hh</Text>
-      </View>
-    );
+    return <Facts />;
+  }
+  if (itemId === 6) {
+    return <Setting />;
   }
 };
 
