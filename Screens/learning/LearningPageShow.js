@@ -1,24 +1,25 @@
-import React, { useRef, useEffect, useState } from "react";
 import {
-  View,
-  SafeAreaView,
-  Text,
+  Animated,
+  Dimensions,
   Image,
   ImageBackground,
-  Dimensions,
-  Animated,
+  SafeAreaView,
   StyleSheet,
+  Text,
   TouchableOpacity,
+  View,
 } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
 
+import { AdMobInterstitial } from "expo-ads-admob";
+import AppLoading from "expo-app-loading";
 import { Audio } from "expo-av";
 import useFonts from "../../hooks/useFonts";
-import AppLoading from "expo-app-loading";
 
 const { width, height } = Dimensions.get("window");
-export default function LearningPageShow({route}) {
+export default function LearningPageShow({ route }) {
   // , AlphabetData ,FamilytData ,  , , ,
-  const PassedData = route.params
+  const PassedData = route.params;
   const scrollX = useRef(new Animated.Value(0)).current;
   const [sound, setSound] = React.useState();
   const [IsReady, SetIsReady] = useState(false);
@@ -30,43 +31,46 @@ export default function LearningPageShow({route}) {
   const FoodData = PassedData.FoodData.FoodData;
   const AnimalesData = PassedData.AnimalesData.AnimalsData;
   const NumbersData = PassedData.NumbersData.Numberdata;
-  const [LearningData , setLearningData] = useState(SportData)
+  const [LearningData, setLearningData] = useState(SportData);
 
+  function showInterstitial() {
+    AdMobInterstitial.setAdUnitID("ca-app-pub-8621076537564643/1923475351");
+    AdMobInterstitial.requestAdAsync().then(() => {
+      AdMobInterstitial.showAdAsync().catch((e) => console.log(e));
+    });
+  }
 
-const setlearningDATA = ()=>{
-  if(PassedData.itemId === 1){
-  setLearningData(AlphabetData)
-  }
-   if(PassedData.itemId === 2){
-  setLearningData(NumbersData)
-  }
-   if(PassedData.itemId === 3){
-  setLearningData(BodyPartData)
-  }
-   if(PassedData.itemId === 4){
-  setLearningData(SportData)
-  }
-   if(PassedData.itemId === 5){
-  setLearningData(JobsData)
-  }
-   if(PassedData.itemId === 6){
-  setLearningData(FamilytData)
-  }
-   if(PassedData.itemId === 7){
-  setLearningData(AnimalesData)
-  }
-   if(PassedData.itemId === 8){
-  setLearningData(FoodData)
-  }
-}
+  const setlearningDATA = () => {
+    if (PassedData.itemId === 1) {
+      setLearningData(AlphabetData);
+    }
+    if (PassedData.itemId === 2) {
+      setLearningData(NumbersData);
+    }
+    if (PassedData.itemId === 3) {
+      setLearningData(BodyPartData);
+    }
+    if (PassedData.itemId === 4) {
+      setLearningData(SportData);
+    }
+    if (PassedData.itemId === 5) {
+      setLearningData(JobsData);
+    }
+    if (PassedData.itemId === 6) {
+      setLearningData(FamilytData);
+    }
+    if (PassedData.itemId === 7) {
+      setLearningData(AnimalesData);
+    }
+    if (PassedData.itemId === 8) {
+      setLearningData(FoodData);
+    }
+  };
 
-useEffect(() => {
- setlearningDATA()
-  return () => {
-
-  }
-}, [])
-
+  useEffect(() => {
+    setlearningDATA();
+    return () => {};
+  }, []);
 
   React.useEffect(() => {
     return sound
@@ -94,6 +98,7 @@ useEffect(() => {
   }, []);
 
   async function playSound() {
+    // showInterstitial();
     const { sound } = await Audio.Sound.createAsync({
       uri: LearningData[songIndex].audio,
     });
@@ -102,6 +107,9 @@ useEffect(() => {
   }
 
   const goNext = async () => {
+    if (songIndex + 1 === LearningData.length) {
+      showInterstitial();
+    }
     slider.current.scrollToOffset({
       offset: ((songIndex + 1) % LearningData.length) * width,
     });

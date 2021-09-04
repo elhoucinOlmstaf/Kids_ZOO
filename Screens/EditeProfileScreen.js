@@ -9,8 +9,10 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
+import ADmobeBanner from "../admob/ADmobeBanner";
+import { AdMobInterstitial } from "expo-ads-admob";
 import { Entypo } from "@expo/vector-icons";
 import Uploadinganimation from "../Components/Lottie/Uploadinganimation";
 import firebase from "../DataBase/FireBase/Firebase";
@@ -26,6 +28,13 @@ const EditeProfileScreen = () => {
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [Update, setUpdate] = useState(false);
+
+  function showInterstitial() {
+    AdMobInterstitial.setAdUnitID("ca-app-pub-8621076537564643/1923475351");
+    AdMobInterstitial.requestAdAsync().then(() => {
+      AdMobInterstitial.showAdAsync().catch((e) => console.log(e));
+    });
+  }
 
   const getPermission = async () => {
     if (Platform.OS !== "web") {
@@ -67,11 +76,16 @@ const EditeProfileScreen = () => {
   getPermission();
   // here I am uploading the image to firebase storage
   const uploadImageToBucket = async () => {
+    let imgUrl = await getPictureBlob(image);
+
+    if (imgUrl == null && userData.userImg) {
+      imgUrl = userData.userImg;
+    }
     let blob;
     try {
       setUploading(true);
       blob = await getPictureBlob(image);
-      const ref = await storage.ref().child("imageProfile/");
+      const ref = await storage.ref("ProfileImage/profile");
       const snapshot = await ref.put(blob);
       return await snapshot.ref.getDownloadURL();
     } catch (e) {
@@ -90,6 +104,7 @@ const EditeProfileScreen = () => {
     if (Age === "") {
       return alert("Plaese update the age or rewrite the old one");
     }
+    showInterstitial()
 
     setUpdate(true);
     let imgUrl = await uploadImageToBucket();
@@ -110,7 +125,6 @@ const EditeProfileScreen = () => {
         setUpdate(false);
       });
   };
-
 
   return (
     <View style={styles.container}>
@@ -176,6 +190,9 @@ const EditeProfileScreen = () => {
           <Uploadinganimation />
         </View>
       ) : null}
+      <View>
+        <ADmobeBanner />
+      </View>
     </View>
   );
 };

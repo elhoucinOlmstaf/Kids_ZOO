@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { Text, View, TouchableOpacity, Image, Dimensions } from "react-native";
+import { Dimensions, Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import React, { useEffect, useState } from "react";
+
+import { AdMobInterstitial } from "expo-ads-admob";
+import { Audio } from "expo-av";
 import QuizeCompAnimation from "../../Components/Lottie/QuizeCompAnimation";
 import Quizestyles from "../../styles/quizeStyle";
 
 const QuizeShowPage = ({ route }) => {
   const PassedData = route.params;
+
   const AnimaleData = PassedData.AnimaleData.AnimalesQuizeQuestions;
   const MathData = PassedData.MathQuizeData.MathQuizeQuestions;
   const FunnyQuizeData = PassedData.FunnyQuizeData.ScienceQuestionQuize;
@@ -12,6 +16,38 @@ const QuizeShowPage = ({ route }) => {
   const [QuizeData, setQuizeData] = useState(AnimaleData);
   const [quizeCompleted, setquizeCompleted] = useState(false);
   const [CurrentIamge, setCurrentIamge] = useState(0);
+  const [sound, setSound] = useState();
+
+  function showInterstitial() {
+    AdMobInterstitial.setAdUnitID("ca-app-pub-8621076537564643/1923475351");
+    AdMobInterstitial.requestAdAsync().then(() => {
+      AdMobInterstitial.showAdAsync().catch((e) => console.log(e));
+    });
+  }
+
+  async function PlayCorrectSound() {
+    const { sound } = await Audio.Sound.createAsync(
+      require("../../assets/QuizeSounds/CorrectAnswer.mp3")
+    );
+    setSound(sound);
+    await sound.playAsync();
+  }
+  async function PlayWrongSound() {
+    const { sound } = await Audio.Sound.createAsync(
+      require("../../assets/QuizeSounds/wronganswer.mp3")
+    );
+    setSound(sound);
+    await sound.playAsync();
+  }
+  useEffect(() => {
+    return sound
+      ? () => {
+          console.log("Unloading Sound");
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [sound]);
+
   const [score, setScore] = useState(0);
   const [showNextBtn, setshowNextBtn] = useState(false);
   const [CureentOptionSelected, setCureentOptionSelected] = useState(null);
@@ -27,7 +63,8 @@ const QuizeShowPage = ({ route }) => {
     }
     if (PassedData.item.id === 3) {
       setQuizeData(FunnyQuizeData);
-    } if (PassedData.item.id === 4) {
+    }
+    if (PassedData.item.id === 4) {
       setQuizeData(TrivaQuizeData);
     }
   };
@@ -38,8 +75,6 @@ const QuizeShowPage = ({ route }) => {
       setQuizeDataa();
     };
   }, []);
-
-  console.log(MathData);
 
   //reset CureentOptionSelecte ,CurrecttOption,IsOptiomDiabled,howNextBtn
   const reset = () => {
@@ -56,10 +91,13 @@ const QuizeShowPage = ({ route }) => {
     setCurrecttOption(coreect_option);
     setIsOptiomDiabled(true);
     if (selectedOption == coreect_option) {
+      PlayCorrectSound();
       setScore(score + 1);
+      setshowNextBtn(true);
     } else {
+      PlayWrongSound();
+      setshowNextBtn(true);
     }
-    setshowNextBtn(true);
   };
 
   //handle next question
@@ -75,22 +113,15 @@ const QuizeShowPage = ({ route }) => {
 
   // play the quize again
   const playAgain = () => {
+    showInterstitial();
     setquizeCompleted(false);
     reset();
     setScore(0);
   };
-  //sound for incorrect answer
-  const IncorrectSound = () => {
-    alert("it not correct");
-  };
-  //sound for correct answer
-  const correctSound = () => {
-    alert("it correct");
-  };
-  //sound for quizeCompleted answer
-  const quizeCompletedSound = () => {};
 
   return (
+    <SafeAreaView style={{ flex: 1}}>
+      <ScrollView>
     <View>
       <View style={Quizestyles.QuesHaeder}>
         {PassedData.item.id === 1 ? (
@@ -123,6 +154,7 @@ const QuizeShowPage = ({ route }) => {
             }}
           />
         </View>
+        <ScrollView>
         <View
           style={{
             width: width,
@@ -149,7 +181,20 @@ const QuizeShowPage = ({ route }) => {
                     : "pink",
               }}
             >
-              <Text>{option}</Text>
+              <Text
+                style={{
+                  color:
+                    option == CurrecttOption
+                      ? "white"
+                      : option == CureentOptionSelected
+                      ? "white"
+                      : "black",
+                  fontWeight: "bold",
+                  fontSize: 18,
+                }}
+              >
+                {option}
+              </Text>
             </TouchableOpacity>
           ))}
           {/* check if the showNextBtn === true to show it. other wise hide it */}
@@ -162,7 +207,8 @@ const QuizeShowPage = ({ route }) => {
             </TouchableOpacity>
           ) : null}
         </View>
-        {quizeCompleted ? (
+        </ScrollView>
+        {quizeCompleted  ? (
           <View style={Quizestyles.quizeCompletedVonatiner}>
             <View style={Quizestyles.quizeSubConatainer}>
               <Text style={Quizestyles.quizeText}>Quize</Text>
@@ -195,9 +241,10 @@ const QuizeShowPage = ({ route }) => {
             </View>
           </View>
         ) : null}
-        {quizeCompletedSound()}
       </View>
     </View>
+    </ScrollView>
+    </SafeAreaView>
   );
 };
 

@@ -1,20 +1,25 @@
-import React, { useState, useEffect } from "react";
 import {
+  Dimensions,
+  FlatList,
+  Image,
   StyleSheet,
   Text,
-  View,
-  FlatList,
-  Dimensions,
   TouchableOpacity,
-  Image,
+  View,
 } from "react-native";
+import React, { useEffect, useState } from "react";
+
+import ADmobeBanner from "../../admob/ADmobeBanner";
+import Elephantloading from "../../Components/Lottie/Elephantloading";
 import { useNavigation } from "@react-navigation/native";
+
 const QuizeHome = () => {
   const navigation = useNavigation();
   const [AnimaleData, setAnimaleData] = useState("");
   const [MathQuizeData, setMathQuizeData] = useState("");
   const [FunnyQuizeData, setfunnyQuizeData] = useState("");
   const [TrivaQuizeData, setTrivaQuizeData] = useState("");
+  const [IsDataReady, setIsDataReady] = useState(false);
   const QuizCategory = [
     {
       title: "Animals Quize",
@@ -46,6 +51,7 @@ const QuizeHome = () => {
       .then((response) => response.json())
       .then((json) => {
         setMathQuizeData(json);
+        setIsDataReady(true);
       })
       .catch((error) => console.error(error));
   };
@@ -57,6 +63,7 @@ const QuizeHome = () => {
       .then((response) => response.json())
       .then((json) => {
         setAnimaleData(json);
+        setIsDataReady(true);
       })
       .catch((error) => console.error(error));
   };
@@ -68,6 +75,7 @@ const QuizeHome = () => {
       .then((response) => response.json())
       .then((json) => {
         setfunnyQuizeData(json);
+        setIsDataReady(true);
       })
       .catch((error) => console.error(error));
   };
@@ -79,6 +87,7 @@ const QuizeHome = () => {
       .then((response) => response.json())
       .then((json) => {
         setTrivaQuizeData(json);
+        setIsDataReady(true);
       })
       .catch((error) => console.error(error));
   };
@@ -97,44 +106,58 @@ const QuizeHome = () => {
         </Text>
         <Text style={{ fontSize: 20, fontWeight: "bold" }}>the challenge!</Text>
       </View>
-      <FlatList
-        style={styles.container}
-        data={QuizCategory}
-        contentContainerStyle={styles.listContainer}
-        numColumns={2}
-        renderItem={({ item }) => {
-          return (
-            <TouchableOpacity
-              style={styles.card}
-              onPress={() =>
-                navigation.navigate("QuizeShowPage", {
-                  item,
-                  AnimaleData,
-                  MathQuizeData,
-                  FunnyQuizeData,
-                  TrivaQuizeData,
-                })
-              }
-            >
-              <View style={styles.cardFooter}></View>
-              <Image
-                style={styles.cardImage}
-                source={{
-                  uri: item.ImageUrl,
-                }}
-              />
-              <View style={styles.cardHeader}>
-                <View
-                  style={{ alignItems: "center", justifyContent: "center" }}
-                >
-                  <Text style={styles.title}>{item.title}</Text>
+      {IsDataReady === false ? (
+        <Elephantloading />
+      ) : (
+        <FlatList
+          style={styles.container}
+          data={QuizCategory}
+          contentContainerStyle={styles.listContainer}
+          numColumns={2}
+          renderItem={({ item }) => {
+            return (
+              <TouchableOpacity
+                style={styles.card}
+                onPress={() =>
+                  navigation.navigate("QuizeShowPage", {
+                    item,
+                    AnimaleData,
+                    MathQuizeData,
+                    FunnyQuizeData,
+                    TrivaQuizeData,
+                  })
+                }
+              >
+                <View style={styles.cardFooter}></View>
+                <Image
+                  style={styles.cardImage}
+                  source={{
+                    uri: item.ImageUrl,
+                  }}
+                />
+                <View style={styles.cardHeader}>
+                  <View
+                    style={{ alignItems: "center", justifyContent: "center" }}
+                  >
+                    <Text style={styles.title}>{item.title}</Text>
+                  </View>
                 </View>
-              </View>
-            </TouchableOpacity>
-          );
+              </TouchableOpacity>
+            );
+          }}
+          keyExtractor={(item) => item.id}
+        />
+      )}
+    <View
+        style={{
+          width: width,
+          height: 90,
+          position: "absolute",
+          bottom: 0,
         }}
-        keyExtractor={(item) => item.id}
-      />
+      >
+        <ADmobeBanner />
+      </View>
     </View>
   );
 };

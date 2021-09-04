@@ -1,23 +1,15 @@
-import {
-  Animated,
-  Dimensions,
-  Image,
-  SafeAreaView,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import { Animated, Dimensions, StyleSheet, View } from "react-native";
+import React, { useEffect, useState } from "react";
 
+import ADmobeBanner from "../../admob/ADmobeBanner";
+import Elephantloading from "../../Components/Lottie/Elephantloading";
 import { useIsFocused } from "@react-navigation/native";
 
 const { width, height } = Dimensions.get("window");
 export default function Facts() {
-  const scrollX = useRef(new Animated.Value(0)).current;
-  const slider = useRef(null);
-  const [songIndex, setSongIndex] = useState(0);
-  const position = useRef(Animated.divide(scrollX, width)).current;
   const [facts, setFacts] = useState("");
+  const [IsDataReady, setIsDataReady] = useState(false);
+
   const isFocused = useIsFocused();
 
   // fetching jokes data from api
@@ -26,34 +18,13 @@ export default function Facts() {
       .then((response) => response.json())
       .then((json) => {
         setFacts(json);
+        setIsDataReady(true);
       })
       .catch((error) => console.error(error));
   };
   useEffect(() => {
     fetchingJOKESData();
-    scrollX.addListener(
-      ({ value }) => {
-        const val = Math.round(value / width);
-        setSongIndex(val);
-      },
-      [isFocused]
-    );
-    return () => {
-      scrollX.removeAllListeners();
-    };
   }, []);
-
-  const goNext = async () => {
-    slider.current.scrollToOffset({
-      offset: ((songIndex + 1) % facts.FactsData.length) * width,
-    });
-  };
-
-  const goPrv = async () => {
-    slider.current.scrollToOffset({
-      offset: ((songIndex - 1) % facts.FactsData.length) * width,
-    });
-  };
 
   const renderItem = ({ index, item }) => {
     return (
@@ -64,7 +35,6 @@ export default function Facts() {
           backgroundColor: "#e9e5e5",
           flex: 1,
           alignItems: "center",
-
         }}
       >
         <Animated.Image
@@ -82,12 +52,26 @@ export default function Facts() {
 
   return (
     <View>
-      <Animated.FlatList
-        showsHorizontalScrollIndicator={false}
-        data={facts.FactsData}
-        renderItem={renderItem}
-        keyExtractor={(item , index) =>  item.index}
-      />
+      {IsDataReady === false ? (
+        <Elephantloading />
+      ) : (
+        <Animated.FlatList
+          showsHorizontalScrollIndicator={false}
+          data={facts.FactsData}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => item.index}
+        />
+      )}
+      <View
+        style={{
+          width: width,
+          height: 80,
+          position: "absolute",
+          bottom: 0,
+        }}
+      >
+        <ADmobeBanner />
+      </View>
     </View>
   );
 }
@@ -97,10 +81,5 @@ const styles = StyleSheet.create({
     height: height,
     justifyContent: "space-evenly",
     backgroundColor: "#ddd",
-  },
-
-  btns: {
-    flexDirection: "row",
-    justifyContent: "space-around",
   },
 });

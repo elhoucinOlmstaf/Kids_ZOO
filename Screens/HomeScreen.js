@@ -1,4 +1,7 @@
+import * as Network from "expo-network";
+
 import {
+  Alert,
   Dimensions,
   FlatList,
   Image,
@@ -9,19 +12,19 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 
+import ADmobeBanner from "../admob/ADmobeBanner";
 import AppLoading from "expo-app-loading";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Avatar } from "react-native-elements";
-import { Entypo } from "@expo/vector-icons";
+import NetInfo from "@react-native-community/netinfo";
+import { Octicons } from "@expo/vector-icons";
 import firebase from "../DataBase/FireBase/Firebase";
 import useFonts from "../hooks/useFonts";
 import { useIsFocused } from "@react-navigation/native";
 
-// screen
-
 const HomeScreen = ({ navigation, route }) => {
   const MoveTo = (item) => {
-    navigation.navigate("HomeShowCategories", {
+    navigation.push("HomeShowCategories", {
       itemId: item.id,
       Title: item.title,
     });
@@ -76,6 +79,16 @@ const HomeScreen = ({ navigation, route }) => {
             if (isActive) {
               setUserData(documentSnapshot.data());
             }
+          })
+          .catch((error) => {
+            Alert.alert(
+              " sorro Something went wrong try again",
+              error.message,
+              {
+                text: "try Again",
+                onPress: navigation.navigate("HomeScreen"),
+              }
+            );
           });
       }
     });
@@ -144,10 +157,10 @@ const HomeScreen = ({ navigation, route }) => {
               />
             )}
 
-            <Entypo
-              style={{ marginTop: 6 }}
-              name="menu"
-              size={44}
+            <Octicons
+              name="sign-out"
+              style={{ marginTop: 10 }}
+              size={40}
               color="black"
               onPress={signOut}
             />
@@ -217,6 +230,7 @@ const HomeScreen = ({ navigation, route }) => {
           />
         </View>
       </View>
+      <ADmobeBanner />
     </View>
   );
 };

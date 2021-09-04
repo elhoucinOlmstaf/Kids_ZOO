@@ -4,14 +4,15 @@ import {
   Image,
   SafeAreaView,
   StyleSheet,
+  Text,
   TouchableOpacity,
   View,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 
-import AppLoading from "expo-app-loading";
-import useFonts from "../../hooks/useFonts";
-import { useIsFocused } from "@react-navigation/native"
+import ADmobeBanner from "../../admob/ADmobeBanner";
+import Elephantloading from "../../Components/Lottie/Elephantloading";
+import { useIsFocused } from "@react-navigation/native";
 
 const { width, height } = Dimensions.get("window");
 export default function JokesCategory() {
@@ -21,6 +22,7 @@ export default function JokesCategory() {
   const [songIndex, setSongIndex] = useState(0);
   const position = useRef(Animated.divide(scrollX, width)).current;
   const [Jokes, setJokes] = useState("");
+  const [IsDataReady, setIsDataReady] = useState(false);
   const isFocused = useIsFocused();
 
   // fetching jokes data from api
@@ -31,16 +33,20 @@ export default function JokesCategory() {
       .then((response) => response.json())
       .then((json) => {
         setJokes(json);
+        setIsDataReady(true);
       })
       .catch((error) => console.error(error));
   };
 
   useEffect(() => {
     fetchingJOKESData();
-    scrollX.addListener(({ value }) => {
-      const val = Math.round(value / width);
-      setSongIndex(val);
-    } ,[isFocused]);
+    scrollX.addListener(
+      ({ value }) => {
+        const val = Math.round(value / width);
+        setSongIndex(val);
+      },
+      [isFocused]
+    );
 
     return () => {
       scrollX.removeAllListeners();
@@ -82,40 +88,29 @@ export default function JokesCategory() {
       </Animated.View>
     );
   };
-  //load fonts
-  const LoadFonts = async () => {
-    await useFonts();
-  };
-
-  //checking if fonts are ready to use
-  if (!IsReady) {
-    return (
-      <AppLoading
-        startAsync={LoadFonts}
-        onFinish={() => SetIsReady(true)}
-        onError={() => {}}
-      />
-    );
-  }
-  const BgImage = require("../../Images/GreenWallpaper.png");
   return (
     <SafeAreaView style={styles.container}>
       <SafeAreaView style={{ height: 320 }}>
-        <Animated.FlatList
-          ref={slider}
-          horizontal
-          pagingEnabled
-          showsHorizontalScrollIndicator={false}
-          scrollEventThrottle={16}
-          data={Jokes.HalariousJoksj}
-          renderItem={renderItem}
-          keyExtractor={(item, index) => item.ImagesURL}
-          onScroll={Animated.event(
-            [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-            { useNativeDriver: true }
-          )}
-        />
+        {IsDataReady === false ? (
+          <Elephantloading />
+        ) : (
+          <Animated.FlatList
+            ref={slider}
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            scrollEventThrottle={16}
+            data={Jokes.HalariousJoksj}
+            renderItem={renderItem}
+            keyExtractor={(item, index) => item.ImagesURL}
+            onScroll={Animated.event(
+              [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+              { useNativeDriver: true }
+            )}
+          />
+        )}
       </SafeAreaView>
+
       <View style={styles.btns}>
         <TouchableOpacity
           onPress={goPrv}
@@ -128,6 +123,7 @@ export default function JokesCategory() {
             }}
           />
         </TouchableOpacity>
+
         <TouchableOpacity onPress={goNext}>
           <Image
             style={{ width: 100, height: 100 }}
@@ -136,6 +132,9 @@ export default function JokesCategory() {
             }}
           />
         </TouchableOpacity>
+      </View>
+      <View>
+        <ADmobeBanner />
       </View>
     </SafeAreaView>
   );

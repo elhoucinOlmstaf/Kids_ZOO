@@ -1,4 +1,5 @@
-import { StyleSheet , Dimensions } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
+
 const { width, height } = Dimensions.get("window");
 const Quizestyles = StyleSheet.create({
   QuesHaeder: {
@@ -7,22 +8,16 @@ const Quizestyles = StyleSheet.create({
   },
   answersContainer: {
     width: width,
+    height: height,
   },
-  option: {
-    backgroundColor: "tomato",
-    padding: 15,
-    margin: 10,
-    width: width / 1.1,
-    alignItems: "center",
-    borderRadius: 10,
-  },
+
   nextbtn: {
     backgroundColor: "blue",
     alignItems: "center",
     justifyContent: "center",
     width: width / 2,
     borderRadius: 5,
-    marginTop: 45,
+    marginTop: height - height + 55,
     padding: 7,
   },
   text: {

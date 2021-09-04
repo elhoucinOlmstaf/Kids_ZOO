@@ -10,10 +10,10 @@ import { NavigationContainer } from "@react-navigation/native";
 import QuizeHome from "../Screens/Quize/QuizeHome";
 import QuizeShowPage from "../Screens/Quize/QuizeShowPage";
 import React from "react";
-import Setting from "../Screens/Setting/Setting"
 import ShowStories from "../Screens/stories/ShowStories";
 import Sign_Up from "../Screens/Sign_Up";
 import SplashScreen from "../Screens/SplashScreen";
+import SupportMe from "../Screens/Setting/SupportMe"
 import UserProfileScreen from "../Screens/UserProfileScreen";
 import UserResetPassword from "../Screens/userRestePassword";
 import { createDrawerNavigator } from "@react-navigation/drawer";
@@ -58,6 +58,7 @@ const StackApp = () => {
       />
       <Stack.Screen name="UserResetPassword" component={UserResetPassword} />
       <Stack.Screen name="JokesCategory" component={JokesCategory} />
+      <Stack.Screen name="SupportMe" component={SupportMe} />
       <Stack.Screen name="Facts" component={Facts} />
       <Stack.Screen name="AboutMe" component={AboutMe} />
       <Stack.Screen

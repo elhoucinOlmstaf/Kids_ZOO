@@ -1,6 +1,7 @@
-import React from "react";
+import { Dimensions, View } from "react-native";
+
 import LottieView from "lottie-react-native";
-import { View, Dimensions } from "react-native";
+import React from "react";
 
 const Loading = () => {
   const { width, height } = Dimensions.get("window");

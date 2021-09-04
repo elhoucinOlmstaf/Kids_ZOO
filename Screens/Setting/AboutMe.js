@@ -1,6 +1,7 @@
-import { Image, Linking, StyleSheet, Text, View } from "react-native";
+import { Image, Linking, ScrollView, StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 
+import ADmobeBanner from "../../admob/ADmobeBanner";
 import AppLoading from "expo-app-loading";
 import useFonts from "../../hooks/useFonts";
 
@@ -22,10 +23,11 @@ const AboutMe = () => {
     );
   }
   return (
+    <ScrollView>
     <View style={{ paddingBottom: 16 }}>
       <View style={{ alignItems: "center", justifyContent: "center" }}>
         <Image
-          source={require("../../Images/1.png")}
+          source={require("../../Images/myprofile.jpg")}
           style={{
             borderRadius: 100,
             width: 150,
@@ -45,6 +47,7 @@ const AboutMe = () => {
         >
           Hi 👋, I'm Elhoucin
         </Text>
+        <ADmobeBanner />
       </View>
       <View style={{ paddingLeft: 23, padding: 10 }}>
         <Text
@@ -70,8 +73,10 @@ const AboutMe = () => {
           📫 How to reach me houcinolmostaf@gmail.com
         </Text>
         <Text style={styles.text2}> My Instagram easyglish1</Text>
+
       </View>
     </View>
+    </ScrollView>
   );
 };
 

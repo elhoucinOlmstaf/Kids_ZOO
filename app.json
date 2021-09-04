@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Kids Zoo",
-    "slug": "Kids Zoo",
+    "slug": "Kids_Zoo",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -13,18 +13,20 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#C2185B"
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#fff"
       },
-      "package": "com.hosssin"
+
+      "package": "com.hosssin",
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-8621076537564643~7584061804"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"

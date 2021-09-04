@@ -9,14 +9,13 @@ import {
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 
+import ADmobeBanner from "../../admob/ADmobeBanner";
 import Loading from "../../Components/Lottie/Loading";
 import firebase from "firebase";
-import { useIsFocused } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 
 const Stories = () => {
   const navigation = useNavigation();
-  const isFocused = useIsFocused();
 
   const storage = firebase.storage();
   const [Story1, setStory1] = useState("");
@@ -184,7 +183,9 @@ const Stories = () => {
     setStory10(urls);
     setIsloadingComplet(true);
   };
+
   useEffect(() => {
+    
     STORY1();
     STORY2();
     STORY3();
@@ -198,7 +199,7 @@ const Stories = () => {
   }, []);
 
   const NavigateTo = (item) => {
-    navigation.push("ShowStories", {
+    navigation.navigate("ShowStories", {
       itemID: item.id,
       title: item.title,
       Story1,
@@ -216,6 +217,7 @@ const Stories = () => {
 
   return (
     <SafeAreaView>
+      <ADmobeBanner />
       {IsloadingComplet ? (
         <Animated.FlatList
           style={styles.list}

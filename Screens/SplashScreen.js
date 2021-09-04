@@ -1,15 +1,11 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
-  SafeAreaView,
-  ActivityIndicator,
-  Text,
-  View,
   StyleSheet,
-  Image,
+  View,
 } from "react-native";
 
-import SpalshScreenAnimation from "../Components/Lottie/SpalshScreenAnimation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import SpalshScreenAnimation from "../Components/Lottie/SpalshScreenAnimation";
 
 const SplashScreen = ({ navigation }) => {
   const [animating, setAnimating] = useState(true);
@@ -24,6 +20,7 @@ const SplashScreen = ({ navigation }) => {
     setTimeout(() => {
       getUserData();
     }, 5500);
+    return () => clearTimeout();
   }, []);
 
   useEffect(() => {

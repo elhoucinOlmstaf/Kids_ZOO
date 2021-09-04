@@ -1,5 +1,7 @@
 node_modules/
 .expo/
+Kids_Zoo
+Kids_Zoo.jks
 npm-debug.*
 *.jks
 *.p8
