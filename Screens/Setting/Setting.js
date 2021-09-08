@@ -41,15 +41,6 @@ const Setting = () => {
 
   const review = () => {
     showInterstitial()
-    const androidPackageName = "Kids_Zoo";
-    // Open the Android Play Store in the browser -> redirects to Play Store on Android
-    Linking.openURL(
-      `https://play.google.com/store/apps/details?id=${androidPackageName}&showAllReviews=true`
-    );
-    // Open the Android Play Store directly
-    Linking.openURL(
-      `market://details?id=${androidPackageName}&showAllReviews=true`
-    );
   };
 
   function MoveToediteProfile(){

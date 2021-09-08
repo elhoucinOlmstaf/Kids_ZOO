@@ -27,6 +27,7 @@ export default function Facts() {
   }, []);
 
   const renderItem = ({ index, item }) => {
+    console.log(item.id)
     return (
       <Animated.View
         style={{
@@ -59,7 +60,7 @@ export default function Facts() {
           showsHorizontalScrollIndicator={false}
           data={facts.FactsData}
           renderItem={renderItem}
-          keyExtractor={(item, index) => item.index}
+          keyExtractor={item => item.id.toString()}
         />
       )}
       <View

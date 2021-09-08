@@ -1,18 +1,16 @@
-import { Dimensions, StyleSheet, View } from "react-native";
-
 import { AdMobInterstitial } from "expo-ads-admob";
 import React from "react";
-
-const { width } = Dimensions.get("window");
+import { View } from "react-native";
 
 const InerTitleAd = () => {
-   
+
   return (
     <View>
-      <AdMobBanner
+      <AdMobInterstitial
         adUnitID="ca-app-pub-8621076537564643/6678992487"
         bannerSize="smartBanner"
         servePersonalizedAds={true}
+        onAdFailedToLoad={error => console.error(error)}
       />
     </View>
   );
